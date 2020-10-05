@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+
+  be_admin:
+    container_name: be_admin
+    hostname: be_admin
+    depends_on:
+      - dbflashcards
+    build:
+      context: flashcardsadminbe
+      dockerfile: Dockerfile
+    working_dir: /app
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./flashcardsadminbe:/app"
+    command: sh -c "bash /app/docker_init.sh"
+
+  fe_admin:
+    container_name: fe_admin
+    hostname: fe_admin
+    depends_on:
+      - be_admin
+    build:
+      context: flashcardsadminfe
+      dockerfile: Dockerfile
+    working_dir: /app
+    ports:
+      - "8081:8081"
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./flashcardsadminfe:/app"
+    command: sh -c "bash /app/docker_init.sh"
+
+  flashcardsapp:
+    container_name: app
+    hostname: app
+    depends_on:
+      - fe_admin
+    build:
+      context: flashcardsapp
+      dockerfile: Dockerfile
+    volumes:
+      - "./flashcardsapp:/app"
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    command: sh -c "bash /app/docker_init.sh"
+
+  dbflashcards:
+    image: mysql:5.7
+    container_name: dbflashcards
+    restart: "no"
+    build:
+      context: mysql
+      dockerfile: Dockerfile
+    working_dir: /app
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: users
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test1234
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./mysql/docker/data/db:/var/lib/mysql
+      - ./mysql:/app

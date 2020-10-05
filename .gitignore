@@ -1,0 +1,13 @@
+.idea
+/flashcardsadminbe/app/config/*.config.js
+/flashcardsadminbe/app/config/*.config.env
+node_modules
+build
+.DS_Store
+.env
+/flashcardsadminfe/src/configs.js
+flashcards_data.sql
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+docker

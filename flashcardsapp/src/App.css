@@ -1,0 +1,106 @@
+.categoriesHeader {
+  margin-top:20px;
+  margin-bottom:20px;
+}
+.categoriesTitle {
+  font-weight:bold;
+  font-size:25px;
+}
+.linkToAdmin {
+  text-align:center;
+  margin:0px auto;
+  width:300px;
+}
+.buttonsCont {
+  position:relative;
+  margin:10px auto;
+  width:310px;
+  border:0px solid black;
+}
+.button {
+  cursor:pointer;
+  text-align:center;
+  border:2px solid black;
+  float:left;
+  margin:2px;
+  width:100px;
+  padding:15px;
+  border-radius:15px;
+}
+.container {
+  margin-bottom:50px;
+}
+.homeIcon {
+  float:right;
+  height:40px;
+  width:40px;
+}
+.arrow {
+  font-size:25px;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+.subcategoryBtn {
+  margin:2px 0px 2px 20px;
+  width:290px;
+  text-align:left;
+}
+.takeItLink {
+  text-decoration:none;
+  font-weight:bold;
+}
+.listRow {
+  margin-top:5px;
+  position:relative;
+  border:0px solid black;
+}
+.tutorialTitle{
+  font-weight:bold;
+  display:inline-block;
+  font-size:18px;
+}
+.tutorialUsername{
+  display:inline-block;
+  margin:2px;
+}
+.takeItBtnCont{
+  display:inline-block;
+  margin-left:10px;
+  /*position:absolute;*/
+  /*top:2px;*/
+  /*right:2px;*/
+}
+.takeItBtn {
+  font-weight:bold;
+}
+
+.tutorialDescription{
+  display:block;
+  margin-left:10px;
+}
+.categoryHeader {
+  border:2px solid #ccc;
+  padding:10px;
+  border-radius:10px;
+  background-color:#fafafa;
+  margin-top:12px;
+  margin-bottom:10px;
+  font-weight:bold;
+  font-size:20px;
+}
+
+
+.cardCont {
+  height:425px;
+}
+
+.card {
+  height:400px;
+}
+
+@media screen and (max-width: 700px) {
+
+}
+
