@@ -9,7 +9,7 @@ services:
       - dbflashcards
     build:
       context: flashcardsadminbe
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.ubuntu
     working_dir: /app
     ports:
       - "8080:8080"

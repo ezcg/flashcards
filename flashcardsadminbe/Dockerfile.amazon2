@@ -5,5 +5,8 @@ RUN yum -y update && \
     yum install -y tar.x86_64 && \
     yum -y install xz && \
     yum -y install gzip && \
+    yum -y install nodejs && \
+    yum -y install epel-release && \
+    yum -y install which && \
     yum clean all
 

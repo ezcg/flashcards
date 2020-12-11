@@ -39,14 +39,14 @@ app.use(function(req, res, next) {
   next();
 });
 
-if (process.env.ENVIRONMENT !== 'dev') {
-  const db = require("./app/models");
-  // force: true will drop the table if it already exists
-  db.sequelize.sync({force: false}).then(() => {
-    //initial();
-    logger.log('info',"db.sequelize.sync run");
-  });
-}
+// if (process.env.ENVIRONMENT !== 'dev') {
+//   const db = require("./app/models");
+//   // force: true will drop the table if it already exists
+//   db.sequelize.sync({force: false}).then(() => {
+//     //initial();
+//     logger.log('info',"db.sequelize.sync run");
+//   });
+// }
 
 // const dbConfig = require("./app/config/db.config.js");
 // console.log("db prod configs", dbConfig);
