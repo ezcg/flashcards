@@ -40,7 +40,7 @@ async function verifyTutorialAccess(tutorialId, req, res) {
     let maxActions = 300;
     let yyyymmdd = new Date().toISOString().slice(0,10);
     let numAction24Hours = 0;
-    let r = await NumAction.findOrCreate({where:{userId:req.validatedUserId, yyyymmdd:yyyymmdd}});
+    let r = await NumAction.findOrCreate({where:{userId:req.validatedUserId, yyyymmdd:yyyymmdd}, order: 'id DESC'});
     if (r[1] === false) {
       numAction24Hours = r[0]['num'];
       await NumAction.increment('num', {where:{userId:req.validatedUserId, yyyymmdd:yyyymmdd}});

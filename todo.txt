@@ -4,7 +4,7 @@ Make more noticable:
     most recently added card appears first in list when editing. See what you just added without having to scroll down
     make "You've made 20 flashcards which is the maximum number of flashcards you can have per tutorial. Well done!" more visible
     what to do about cloudfront caching - don't cache .json files?
-    make Question visibily different from Answer in edit mode
+    make Question visibly different from Answer in edit mode
 
 deploy to elasticbeanstalk with database automatically initialized if it isn't already
 auto backup of db

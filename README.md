@@ -15,6 +15,8 @@
     docker container,  mysql -uroot -proot --host=dbflashcards from inside be_admin docker container will connect 
     properly.  
 - To give yourself the role of admin, update user table. (Once you log in with Google, you're automatically put into the user table). update users set role=7 where id = YOURID    
+- As an admin that has created a flashcard tutorial, once you distribute it, you may need to clear your browser's cache to 
+  view the flashcards in the app
     
 See README.md in flashcardsadminbe for deploying admin backend to Beanstalk.    
 See README.md in flashcardsapp for deploying to S3
