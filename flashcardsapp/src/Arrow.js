@@ -2,8 +2,9 @@
 
 import { css, jsx } from '@emotion/core'
 
-const Arrow = ({ direction, handleClick }) => (
-  <div
+const Arrow = ({ direction, handleClick, disableBtn }) => (
+  <button
+    disabled={disableBtn}
     onClick={handleClick}
     css={css`
       display: flex;
@@ -38,7 +39,7 @@ const Arrow = ({ direction, handleClick }) => (
       ? <div className="arrow" dangerouslySetInnerHTML={{ __html: "&raquo;" }} />
       : <div className="arrow" dangerouslySetInnerHTML={{ __html: "&laquo;" }} />
     }
-  </div>
+  </button>
 )
 
 export default Arrow

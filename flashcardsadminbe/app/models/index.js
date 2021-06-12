@@ -23,6 +23,7 @@ db.card = require("./card.model.js")(sequelize, Sequelize);
 db.tutorials_num_created = require("./tutorials_num_created.model.js")(sequelize, Sequelize);
 db.num_action = require("./num_action.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.hint_categories = require("../models/hint_categories.model.js")(sequelize, Sequelize);
 
 /*
 db.role = require("../models/role.model.js")(sequelize, Sequelize);

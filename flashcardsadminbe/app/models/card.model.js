@@ -19,6 +19,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     rank: {
       type: Sequelize.INTEGER
+    },
+    hint: {
+      type: Sequelize.STRING
+    },
+    hintCategoryId: {
+      type:Sequelize.INTEGER
     }
   });
 

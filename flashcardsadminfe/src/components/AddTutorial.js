@@ -96,9 +96,6 @@ const AddTutorial = () => {
         <Message messageObj={messageObj} />
 
       </div>
-
-
-
     </div>
   );
 };

@@ -24,3 +24,5 @@ See README.md in flashcardsapp for deploying to S3
 http://localhost:8081 - frontend that calls the backend at http://localhost:8080
 The app for training yourself with flashcards is at http://localhost:3000
 
+
+

@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { useState, useEffect } from 'react'
-import { css, jsx } from '@emotion/core'
+import { jsx } from '@emotion/core'
 import Card from './Card'
 import Buttons from './Buttons'
 import configs from "./configs"
@@ -16,10 +16,12 @@ const Cards = () => {
   const [tutorialObj, setTutorialObj] = useState({})
   const [cardNum, setCardNum] = useState(0);
   const [view, setView] = useState('q');
+  const [viewHintBool, setViewHintBool] = useState(false);
 
   useEffect(() => {
     if (!isLoaded) {
-      fetch(configs.s3Url + 'json/' + tutorialId + '.json')
+      let url = configs.s3Url + 'json/' + tutorialId + '.json';
+      fetch(url)
         .then(res => res.json())
         .then(
           (result) => {
@@ -42,16 +44,25 @@ const Cards = () => {
   }
 
   const prevCard = function() {
-    let tmpCardNum = cardNum - 1 > 0 ? cardNum - 1 : 0;
+    let tmpCardNum = (cardNum - 1 > 0) ? cardNum - 1 : cardArr.length - 1;
     setCardNum(tmpCardNum)
     setView('q')
   }
 
   const clickView = function() {
-    if (view === 'q') {
+    if (view === 'a') {
+      setView('q')
+    } else if (view === 'q') {
       setView('a');
+    }
+  }
+
+  const handleViewHint = function() {
+    if (viewHintBool) {
+      setViewHintBool(false);
     } else {
-      setView('q');
+      setViewHintBool(true);
+      setView('q')
     }
   }
 
@@ -64,44 +75,39 @@ const Cards = () => {
     return (
 
       <div key="main" className="cardCont">
-        <div css={headerCSS}>
+        <div className="header">
           <Link to="/">
             <img className='homeIcon' src={homeIcon} alt="Home" />
           </Link>
-          <div css={tutorialCategoryCSS}> {tutorialObj.subcategory}: &nbsp;{tutorialObj.title}</div>
-
+          <div className="tutorialCategory"> {tutorialObj.subcategory}: &nbsp;{tutorialObj.title}</div>
           <span>On Question #: {cardNum + 1} of {cardArr.length}</span>
         </div>
         {cardArr.map((cardObj, i) => (
           i === cardNum ? (
-          <Card key={cardObj.question + "_" + i}
-            cardNum={cardNum}
-            cardObj={cardObj}
-            view={view}
-          />
+            <div key={"key_" + i}>
+            <Card key={cardObj.question + "_" + i}
+              cardObj={cardObj}
+              view={view}
+              viewHintBool={viewHintBool}
+            />
+            <Buttons
+              view={view}
+              clickView={clickView}
+              nextCard={nextCard}
+              prevCard={prevCard}
+              handleViewHint={handleViewHint}
+              viewHintBool={viewHintBool}
+              hasHintBool={cardObj.hintCategory !== 'undefined' && cardObj.hintCategory !== '' ? true : false}
+            />
+            </div>
           ) :
             ("")
         ))}
-
-        <Buttons
-          view={view}
-          clickView={clickView}
-          nextCard={nextCard}
-          prevCard={prevCard}
-        />
 
       </div>
 
     )
   }
 }
-
-const tutorialCategoryCSS = css`
-  font-weight:bold;
-`
-
-const headerCSS = css`
-  margin:10px;
-`
 
 export default Cards

@@ -73,6 +73,10 @@ const getCategoryArr = () => {
   return http.get(`/tutorials/getcategoryarr`, { headers: authHeader() });
 };
 
+const getHintCategoryArr = () => {
+  let r = http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} });
+  return r;
+};
 
 export default {
   getAll,
@@ -91,5 +95,6 @@ export default {
   updateCardPublishStatus,
   updateCard,
   deleteCard,
-  getCategoryArr
+  getCategoryArr,
+  getHintCategoryArr
 };

@@ -8,6 +8,7 @@ const maxCharsQuestion = 300;
 const minCharsQuestion = 1;
 const maxCharsAnswer = 450;
 const minCharsAnswer = 1;
+const maxCharsHint = 255;
 
 exports.titleAndDescription = function(title, description) {
 
@@ -26,7 +27,7 @@ exports.titleAndDescription = function(title, description) {
 
 }
 
-exports.questionAndAnswer = function(question, answer) {
+exports.questionAnswerAndHint = function(question, answer, hint) {
   if (!question || !answer) {
     return "Question and answer required.";
   }
@@ -34,6 +35,8 @@ exports.questionAndAnswer = function(question, answer) {
     return "Question cannot be longer than " + maxCharsQuestion + " characters and answer cannot be longer than " + maxCharsAnswer + " characters.";
   } else if (question.length < minCharsQuestion || answer.length < minCharsAnswer) {
     return "Question cannot be shorter than " + maxCharsQuestion + " character and answer cannot be shorter than " + minCharsAnswer + " characters.";
+  } else if (hint.length > maxCharsHint) {
+    return "Hint cannot be longer than " + maxCharsHint + " characters.";
   }
   return true;
 }

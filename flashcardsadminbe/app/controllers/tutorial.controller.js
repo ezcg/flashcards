@@ -1,4 +1,5 @@
 const db = require("../models");
+const HintCategories = db.hint_categories;
 const Tutorial = db.tutorial;
 const Card = db.card;
 const TutorialsNumCreated = db.tutorials_num_created;
@@ -87,7 +88,7 @@ exports.getCards = async (req, res) => {
   let whereObj = { tutorialId: tutorialId};
   Card.findAll({
     where:whereObj,
-    order: [[Sequelize.literal("card.rank"), 'ASC']]
+    order: [[Sequelize.literal("card.rank"), 'ASC' ]]
   })
   .then(dataArr => {
     res.send(dataArr);
@@ -102,7 +103,7 @@ exports.getCards = async (req, res) => {
 exports.addCard = async (req, res) => {
 
   let tutorialId = req.body.id;
-  let result = validateHelper.questionAndAnswer(req.body.question, req.body.answer);
+  let result = validateHelper.questionAnswerAndHint(req.body.question, req.body.answer, req.body.hint);
   if (result !== true) {
     return res.status(400).send({message: result});
   }
@@ -122,7 +123,9 @@ exports.addCard = async (req, res) => {
     question: req.body.question,
     answer: req.body.answer,
     tutorialId:tutorialObj.id,
-    published:1
+    published:1,
+    hint:req.body.hint,
+    hintCategoryId:req.body.hintCategoryId
   };
 
   Card.create(card)
@@ -140,8 +143,8 @@ exports.addCard = async (req, res) => {
 exports.updateCard = async (req, res) => {
 
   const tutorialId = req.params.tutorialId;
-  const {answer, question, cardId} = req.body;
-  let result = validateHelper.questionAndAnswer(question, answer);
+  const {answer, question, cardId, hintCategoryId, hint} = req.body;
+  let result = validateHelper.questionAnswerAndHint(question, answer, hint);
   if (result !== true) {
     return res.status(400).send({message: result});
   }
@@ -166,9 +169,9 @@ exports.updateCard = async (req, res) => {
   }
 
   if (isDup) {
-    res.status(400).send({message: "That question is already part of this flashcard set and no update performed"});
+    res.status(400).send({message: "That question is already part of this flashcard set and no update was performed"});
   } else {
-    Card.update({question:question,answer:answer}, {
+    Card.update({question:question,answer:answer, hint:hint, hintCategoryId:hintCategoryId}, {
       where: { tutorialId: tutorialId, id: cardId}
     })
     .then(num => {
@@ -493,6 +496,11 @@ exports.publish = async (req, res) => {
     // Get all flashcards associated with tutorial and write tutorial json to s3 (but not to list.json, that is done
     // via /distribute
     //
+    let tmpHintCategoryArr = await HintCategories.findAll({raw:true, order: [[Sequelize.literal("hint_categories.id"), 'ASC']]});
+    let hintCategoryArr = [];
+    for(let i = 0; i < tmpHintCategoryArr.length; i++) {
+      hintCategoryArr[tmpHintCategoryArr[i].id] = tmpHintCategoryArr[i].hintCategory;
+    }
     let dataArr = await Card.findAll({
       where:{ tutorialId: tutorialId, published:1},
       order: [[Sequelize.literal("card.rank"), 'ASC']]
@@ -503,6 +511,11 @@ exports.publish = async (req, res) => {
       obj.cardId = row.dataValues.id;
       obj.question = row.dataValues.question;
       obj.answer = row.dataValues.answer;
+      obj.hintCategory = "";
+      if (row.dataValues.hintCategoryId) {
+        obj.hintCategory = hintCategoryArr[row.dataValues.hintCategoryId]
+        obj.hint = row.dataValues.hint;
+      }
       tutorialObj.flashcards.push(obj);
     });
 
@@ -563,7 +576,6 @@ exports.delete = async (req, res) => {
   });
 };
 
-
 // Send all published=1 tutorials to list.json so that they may be accessed via main public category list
 exports.distribute = async (req, res) => {
   if (!isModerator(req)) {
@@ -584,4 +596,14 @@ exports.getCategoryArr = (req, res) => {
   res.send(categoryJson);
 };
 
+exports.getHintCategoryArr = (req, res) => {
 
+  HintCategories.findAll({order: [[Sequelize.literal("hint_categories.id"), 'ASC']]})
+    .then(dataArr => {
+      res.send(dataArr);
+    }).catch(err => {
+      res.status(500).send({message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    });
+};

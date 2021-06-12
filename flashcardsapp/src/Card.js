@@ -1,11 +1,20 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core'
 
-export default function Card ({ cardObj, view }) {
+export default function Card ({ cardObj, view, viewHintBool }) {
 
   if (!cardObj) {
     return null
   }
+  let output = '';
+  if (viewHintBool) {
+    output = '<pre>' + cardObj.hintCategory + ":" + cardObj.hint + '</pre>';
+  } else if (view === 'q') {
+    output = '<pre>Q: ' + cardObj.question + '</pre>';
+  } else if (view === 'a') {
+    output = "<pre>" + cardObj.answer + "</pre>";
+  }
+
   return <div className="card"
     css={css`
       background-size: cover;
@@ -15,6 +24,11 @@ export default function Card ({ cardObj, view }) {
       margin:10px;
       padding:10px;
     `}
-  >{view === 'q' ? (<pre>Q: {cardObj.question}</pre>) : (<pre>{cardObj.answer}</pre>)}<div style={{clear:"both"}}></div></div>
+  >
+
+  <div style={{clear:"both"}} dangerouslySetInnerHTML={{ __html: output }} />
+  </div>
 }
+
+
 

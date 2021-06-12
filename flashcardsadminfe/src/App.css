@@ -4,6 +4,31 @@
 }
 /* END overwrite bootstrap */
 
+.hintCategory {
+    float:left;
+    margin-right:10px;
+}
+
+.hintCategoryDD {
+    margin-top:11px;
+}
+
+.hintCont {
+    float:left;
+    width:100%;
+}
+
+.hintLabel, .hintText {
+    float:left;
+}
+.hintLabel {
+    margin-top:3px;
+}
+.hintText {
+    margin-left:5px;
+    width:92%
+}
+
 .charCounterCont {
   float:left;
   margin-left:4px;

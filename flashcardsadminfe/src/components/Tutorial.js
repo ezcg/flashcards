@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TutorialDataService from "../services/TutorialService";
 import CategoryDD from "./CategoryDD";
+import HintCategoryDD from "./HintCategoryDD";
 import Message from "./Message";
 import CardBtns from "./CardBtns";
 import {
@@ -12,6 +13,7 @@ import CharCounter from "./CharCounter";
 import configs from "../configs";
 import TutorialNoEdit from "./TutorialNoEdit";
 import AuthService from "../services/auth.service";
+import Hint from './Hint'
 
 const Tutorial = ({props}) => {
 
@@ -20,7 +22,8 @@ const Tutorial = ({props}) => {
     title: "",
     description: "",
     published: false,
-    subcategory: ""
+    subcategory: "",
+    hintCategoryArr:[]
   };
 
   const history = useHistory();
@@ -33,16 +36,32 @@ const Tutorial = ({props}) => {
   const [isTutorialLoaded, setIsTutorialLoaded] = useState(false);
   const [areCardsLoaded, setAreCardsLoaded] = useState(false);
   const [areCardsLoading, setAreCardsLoading] = useState(false);
-
+  const [areHintCategoriesLoading, setAreHintCategoriesLoading] = useState(false);
+  const [areHintCategoriesLoaded, setAreHintCategoriesLoaded] = useState(false);
+  const [hintCategoryArr, setHintCategoryArr] = useState([]);
   const initialAddCardState = {
     id: currentTutorial.id,
     cardId: null,
     questionAdd: "",
-    answerAdd: ""
+    answerAdd: "",
+    hint: "",
+    hintCategory:0
   };
   const [cardAdd, setCardAdd] = useState(initialAddCardState);
 
   useEffect(() => {
+
+    const getHintCategoryArr = () => {
+      setAreHintCategoriesLoading(true);
+      TutorialDataService.getHintCategoryArr()
+        .then(response => {
+          setAreHintCategoriesLoaded(true);
+          setHintCategoryArr(response.data);
+        })
+        .catch(e => {
+          setMessageObj({message:"", success:0, errorObj:e});
+        });
+    };
 
     const getTutorial = id => {
       setIsTutorialLoading(true);
@@ -61,6 +80,7 @@ const Tutorial = ({props}) => {
       TutorialDataService.getCards(id)
       .then(response => {
         setAreCardsLoaded(true);
+        console.log("getCards", response.data)
         setCardsArr(response.data);
       })
       .catch(e => {
@@ -68,13 +88,24 @@ const Tutorial = ({props}) => {
       });
     };
 
+    if (!areHintCategoriesLoaded && !areHintCategoriesLoading) {
+      getHintCategoryArr();
+    }
+
     if (!isTutorialLoaded && !isTutorialLoading) {
       getTutorial(props.computedMatch.params.id);
     }
     if (!areCardsLoaded && !areCardsLoading) {
       getCards(props.computedMatch.params.id);
     }
-  }, [props.computedMatch.params.id, isTutorialLoaded, areCardsLoaded, areCardsLoading, isTutorialLoading]);
+  }, [props.computedMatch.params.id,
+    isTutorialLoaded,
+    areCardsLoaded,
+    areCardsLoading,
+    isTutorialLoading,
+    areHintCategoriesLoading,
+    areHintCategoriesLoaded
+  ]);
 
   const handleTutorialChange = event => {
     const { name, value } = event.target;
@@ -84,6 +115,22 @@ const Tutorial = ({props}) => {
   const handleCategoryChange = event => {
     const { name, value } = event.target;
     setCurrentTutorial({ ...currentTutorial, [name]: value });
+  }
+
+  const handleAddHintCategoryChange = event => {
+    const { name, value } = event.target;
+    setCardAdd({...cardAdd, [name]: value });
+  }
+
+  const handleEditHintCategoryChange = (event, cardId) => {
+    const { name, value } = event.target;
+    let tmpCardsArr = [...cardsArr];
+    tmpCardsArr.forEach((tmpCardObj, index) => {
+      if (tmpCardObj.id === cardId) {
+        tmpCardsArr[index][name] = value;
+      }
+    });
+    setCardsArr(tmpCardsArr);
   }
 
   const updateTutorial = () => {
@@ -164,7 +211,9 @@ const Tutorial = ({props}) => {
       id:currentTutorial.id,
       cardId:cardAdd.cardId,
       question: cardAdd.questionAdd,
-      answer: cardAdd.answerAdd
+      answer: cardAdd.answerAdd,
+      hint: cardAdd.hint,
+      hintCategoryId: cardAdd.hintCategoryId
     };
 
     TutorialDataService.addCard(data)
@@ -173,12 +222,15 @@ const Tutorial = ({props}) => {
         id: response.data.id,
         cardId: response.data.cardId,
         question: response.data.question,
-        answer: response.data.answer
+        answer: response.data.answer,
+        hint: response.data.hint,
+        hintCategoryId: response.data.hintCategoryId
       });
       setMessageAddCard("Added!");
-      setCardAdd({questionAdd:"", answerAdd:""});
+      setCardAdd({questionAdd:"", answerAdd:"", hint:"", hintCategoryId:0});
       let tmpCardsArr = [...cardsArr];
       tmpCardsArr.push(response.data);
+      console.log("addCard", tmpCardsArr);
       setCardsArr(tmpCardsArr);
     })
     .catch(e => {
@@ -192,7 +244,9 @@ const Tutorial = ({props}) => {
       id:currentTutorial.id,
       cardId:cardObj.id,
       question: cardObj.question,
-      answer: cardObj.answer
+      answer: cardObj.answer,
+      hintCategoryId: cardObj.hintCategoryId,
+      hint: cardObj.hint
     };
 
     TutorialDataService.updateCard(currentTutorial.id, data)
@@ -310,11 +364,13 @@ const Tutorial = ({props}) => {
 
           {currentTutorial.published ? (
             <div className="updatePublishNotice">To edit anything about this tutorial, you must first hit the Unpublish button
-              above. When done editing, hit the Publish button.</div>
+              above. When done editing, hit the Publish button and then go to Moderate Undistributed and Distribute.</div>
           ) : ("")
           }
 
         </div>
+
+        {/*ADD CARD */}
 
         <div>
           <span className="addLabel">Add Flashcard</span>
@@ -341,7 +397,9 @@ const Tutorial = ({props}) => {
               <CharCounter maxChars={configs.maxCharsQuestion} chars={cardAdd.questionAdd} />
 
             </div>
+
             <div style={{clear:"both"}} />
+
             <div className="form-group">
               <label className="questionAddLabel" htmlFor="questionAdd">Answer:</label>
               <textarea
@@ -356,18 +414,35 @@ const Tutorial = ({props}) => {
               <CharCounter maxChars={configs.maxCharsAnswer} chars={cardAdd.answerAdd} />
 
             </div>
+
             <div style={{clear:"both"}} />
 
-              <button className="btn btn-primary" onClick={addCard}>
-                Add
-              </button>
-              <div style={{clear:"both"}} />
-              <br />
-              <Message messageObj={messageAddCard} />
+            <HintCategoryDD
+              handleHintCategoryChange={handleAddHintCategoryChange}
+              hintCategoryArr={hintCategoryArr}
+              selectedAddHintCategory={0}
+              cardId={0}
+            />
+
+            <Hint
+              hint={cardAdd.hint}
+              handleInputChange={handleAddCardChange}
+            />
+
+            <div style={{clear:"both"}} />
+
+            <button className="btn btn-primary" onClick={addCard}>
+              Add
+            </button>
+            <div style={{clear:"both"}} />
+            <br />
+            <Message messageObj={messageAddCard} />
 
             </form>
           ))}
         </div>
+
+       {/*EDIT CARD */}
 
       <div>
         <span className="editLabel">Edit Flashcards</span>
@@ -377,7 +452,7 @@ const Tutorial = ({props}) => {
           <div key={cardObj.id}>
           <form>
             <div className="form-group">
-              <label className="questionEditLabel" htmlFor="questionEdit">{index + 1}.) Question:</label>
+              <label className="questionEditLabel" htmlFor="questionEdit">{cardsArr.length - index}.) Question:</label>
               <textarea
                 rows="4"
                 cols="100"
@@ -388,7 +463,6 @@ const Tutorial = ({props}) => {
                 value={cardObj.question}
               />
               <CharCounter maxChars={configs.maxCharsQuestion} chars={cardObj.question} />
-
             </div>
             <div style={{clear:"both"}} />
 
@@ -406,6 +480,21 @@ const Tutorial = ({props}) => {
               <CharCounter maxChars={configs.maxCharsAnswer} chars={cardObj.answer} />
 
             </div>
+
+            <div style={{clear:"both"}} />
+
+            <HintCategoryDD
+              handleHintCategoryChange={handleEditHintCategoryChange}
+              hintCategoryArr={hintCategoryArr}
+              selectedHintCategory={cardObj.hintCategoryId}
+              cardId={cardObj.id}
+            />
+
+            <Hint
+              hint={cardObj.hint}
+              handleInputChange={handleEditCardChange}
+              cardObj={cardObj}
+            />
 
             <div style={{clear:"both"}} />
 

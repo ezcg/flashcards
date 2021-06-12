@@ -30,6 +30,9 @@ module.exports = app => {
   // Get categories
   router.get("/getcategoryarr", [authJwt.verifyToken], tutorialController.getCategoryArr);
 
+  // Get hint categories
+  router.get("/gethintcategoryarr", [authJwt.verifyToken], tutorialController.getHintCategoryArr);
+
   // Push all published tutorials json to s3 so that is it accessible via the main public categories list
   router.get("/distribute",[authJwt.verifyToken], tutorialController.distribute);
 
