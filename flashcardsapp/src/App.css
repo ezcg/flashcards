@@ -1,7 +1,15 @@
 .tutorialCategory {
   font-weight:bold;
 }
-
+.aboutHintsLinkCont {
+    margin:10px auto;
+    width:120px;
+}
+.aboutHintsLink {
+    text-align:center;
+    text-decoration:none;
+    font-weight:bold;
+}
 .header {
     margin:10px;
 }
@@ -21,7 +29,7 @@
 }
 .buttonsCont {
   margin:10px auto;
-  width:370px;
+  width:310px;
   border:0px solid black;
 }
 .button, .buttonHint {
@@ -30,9 +38,10 @@
   border:2px solid black;
   float:left;
   margin:2px;
-  width:100px;
+  width:70px;
   padding:15px 0px 15px 0px;
   border-radius:15px;
+  font-weight:bold;
 }
 .buttonHint {
     width:50px;

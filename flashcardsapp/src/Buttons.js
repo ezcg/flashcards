@@ -9,7 +9,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   let answerBg = "#ffffff";
   let questionBg = "#ffffff";
   let hintBg = "#ffffff";
-  let answerBtnText = 'Answer';
+  let answerBtnText = 'A';
   let answerHandler = clickView;
   // if there is no hint, disable hint button
   let disableHintBtn = false
@@ -46,7 +46,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
     css={css`background-color:${questionBg}`}
     disabled={disableNonHintBtn}
   >
-  Question
+  Q
   </button>
 
   {/*answer  */}
@@ -76,6 +76,10 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
     disableBtn={disableNonHintBtn}
   />
   <div style={{clear:"both"}} />
+  <div className="aboutHintsLinkCont"
+  ><a rel="noopener noreferrer" href="https://flashcards.ezcg.com/hints.html" target="_blank"
+  ><b>About Hints</b></a>
+  </div>
   </div>
 
 }

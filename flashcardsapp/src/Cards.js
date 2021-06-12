@@ -97,11 +97,10 @@ const Cards = () => {
               prevCard={prevCard}
               handleViewHint={handleViewHint}
               viewHintBool={viewHintBool}
-              hasHintBool={cardObj.hintCategory !== 'undefined' && cardObj.hintCategory !== '' ? true : false}
+              hasHintBool={(cardObj.hintCategory === 'undefined' || !cardObj.hintCategory) ? false : true}
             />
             </div>
-          ) :
-            ("")
+          ) : ("")
         ))}
 
       </div>
@@ -110,4 +109,4 @@ const Cards = () => {
   }
 }
 
-export default Cards
+export default Cards;
