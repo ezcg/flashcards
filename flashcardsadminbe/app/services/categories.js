@@ -1,11 +1,13 @@
 // needs to be in this format so that json decode works properly
 exports.setCategoryArr = function() {
   let categoryArr = {};
-  categoryArr['Programming'] = ['Javascript', 'ReactJS', 'NodeJS', 'PHP', 'Version Control', 'Linux'];
-  categoryArr['AWS Certification'] = ['Cloud Practitioner', 'SysOps Administrator Associate', 'Developer Associate', 'DevOps Engineer Professional', 'Solutions Architect Associate', 'Solutions Architect Professional'];
+  categoryArr['Programming'] = ['Javascript', 'Version Control'];
+  //categoryArr['Programming'] = ['Javascript', 'ReactJS', 'NodeJS', 'PHP', 'Version Control', 'Linux'];
+  categoryArr['AWS Certification'] = ['Cloud Practitioner', 'DevOps Engineer Professional'];
+  //categoryArr['AWS Certification'] = ['Cloud Practitioner', 'SysOps Administrator Associate', 'Developer Associate', 'DevOps Engineer Professional', 'Solutions Architect Associate', 'Solutions Architect Professional'];
   categoryArr['Language'] = ['Spanish', 'French'];
   categoryArr['Physics'] = ['Introductory'];
-  categoryArr['Math'] = ['Algebra', 'Calculus'];
+  categoryArr['Math'] = ['Algebra'];
   return categoryArr;
 }
 

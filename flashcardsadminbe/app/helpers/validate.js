@@ -35,7 +35,7 @@ exports.questionAnswerAndHint = function(question, answer, hint) {
     return "Question cannot be longer than " + maxCharsQuestion + " characters and answer cannot be longer than " + maxCharsAnswer + " characters.";
   } else if (question.length < minCharsQuestion || answer.length < minCharsAnswer) {
     return "Question cannot be shorter than " + maxCharsQuestion + " character and answer cannot be shorter than " + minCharsAnswer + " characters.";
-  } else if (hint.length > maxCharsHint) {
+  } else if (hint && hint.length > maxCharsHint) {
     return "Hint cannot be longer than " + maxCharsHint + " characters.";
   }
   return true;
