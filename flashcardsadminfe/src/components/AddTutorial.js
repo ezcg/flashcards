@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import CategoryDD from "./CategoryDD.js"
+import TutorialTopLevel from "./TutorialTopLevel.js"
+
 import Message from "./Message.js"
-import TitleAndDesc from "./TitleAndDesc.js"
+
 import TutorialDataService from "../services/TutorialService";
 import  { Redirect } from 'react-router-dom'
 import configs from "../configs";
@@ -79,14 +80,12 @@ const AddTutorial = () => {
     <div className="submit-form">
       <div>
 
-        <TitleAndDesc tutorial={tutorial} handleInputChange={handleInputChange} />
-
-        <div style={{clear:"both"}} />
-        <br />
-
-        <div className="form-group">
-          Category: <CategoryDD handleCategoryChange={handleCategoryChange} />
-        </div>
+        <TutorialTopLevel
+          tutorial={tutorial}
+          handleInputChange={handleInputChange}
+          handleCategoryChange={handleCategoryChange}
+          selectedSubcategory={0}
+        />
 
         <button onClick={saveTutorial} className="btn btn-success">
           Submit

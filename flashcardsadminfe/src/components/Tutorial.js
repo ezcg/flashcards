@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import TutorialDataService from "../services/TutorialService";
-import CategoryDD from "./CategoryDD";
-import HintCategoryDD from "./HintCategoryDD";
+import Card from "./Card";
 import Message from "./Message";
 import CardBtns from "./CardBtns";
 import {
   Link,
   useHistory
 } from "react-router-dom";
-import TitleAndDesc from "./TitleAndDesc";
-import CharCounter from "./CharCounter";
-import configs from "../configs";
 import TutorialNoEdit from "./TutorialNoEdit";
 import AuthService from "../services/auth.service";
-import Hint from './Hint'
+import TutorialTopLevel from './TutorialTopLevel'
 
 const Tutorial = ({props}) => {
 
@@ -42,8 +38,8 @@ const Tutorial = ({props}) => {
   const initialAddCardState = {
     id: currentTutorial.id,
     cardId: null,
-    questionAdd: "",
-    answerAdd: "",
+    question: "",
+    answer: "",
     hint: "",
     hintCategory:0
   };
@@ -80,7 +76,6 @@ const Tutorial = ({props}) => {
       TutorialDataService.getCards(id)
       .then(response => {
         setAreCardsLoaded(true);
-        console.log("getCards", response.data)
         setCardsArr(response.data);
       })
       .catch(e => {
@@ -210,8 +205,8 @@ const Tutorial = ({props}) => {
     let data = {
       id:currentTutorial.id,
       cardId:cardAdd.cardId,
-      question: cardAdd.questionAdd,
-      answer: cardAdd.answerAdd,
+      question: cardAdd.question,
+      answer: cardAdd.answer,
       hint: cardAdd.hint,
       hintCategoryId: cardAdd.hintCategoryId
     };
@@ -227,10 +222,9 @@ const Tutorial = ({props}) => {
         hintCategoryId: response.data.hintCategoryId
       });
       setMessageAddCard("Added!");
-      setCardAdd({questionAdd:"", answerAdd:"", hint:"", hintCategoryId:0});
+      setCardAdd({question:"", answer:"", hint:"", hintCategoryId:0});
       let tmpCardsArr = [...cardsArr];
       tmpCardsArr.push(response.data);
-      console.log("addCard", tmpCardsArr);
       setCardsArr(tmpCardsArr);
     })
     .catch(e => {
@@ -302,21 +296,17 @@ const Tutorial = ({props}) => {
         <>
         <div>
           <form>
-            <TitleAndDesc tutorial={currentTutorial} handleInputChange={handleTutorialChange} />
-            <div style={{clear:"both"}} />
-            <br />
-            <div className="form-group">
-              <b>Category:</b>
-              <CategoryDD
-                handleCategoryChange={handleCategoryChange}
-                selectedSubcategory={currentTutorial.subcategory}
-              />
-              &nbsp;
-              | <b>Tutorial Publish Status:</b> {currentTutorial.published ? "Published" : "Not published"}
-              &nbsp;
-              | <b># Flashcards:</b> {cardsArr.length} (Max 20)
-            </div>
 
+            <TutorialTopLevel
+              tutorial={currentTutorial}
+              handleInputChange={handleTutorialChange}
+              handleCategoryChange={handleCategoryChange}
+              selectedSubcategory={currentTutorial.subcategory}
+            />
+
+            <b>Tutorial Publish Status:</b> {currentTutorial.published ? "Published" : "Not published"}
+            &nbsp;
+            | <b># Flashcards:</b> {cardsArr.length} (Max 20)
           </form>
 
           {currentTutorial.published ? (
@@ -383,50 +373,15 @@ const Tutorial = ({props}) => {
               more flashcards to this tutorial. Once you're done adding cards, you Publish it again.</div>
             ) : (
             <form>
-            <div className="form-group">
-              <label className="questionAddLabel" htmlFor="questionAdd">Question:</label>
-              <textarea
-                rows="4"
-                cols="100"
-                className="questionField"
-                id="questionAdd"
-                name="questionAdd"
-                onChange={handleAddCardChange}
-                value={cardAdd.questionAdd}
-              />
-              <CharCounter maxChars={configs.maxCharsQuestion} chars={cardAdd.questionAdd} />
-
-            </div>
-
-            <div style={{clear:"both"}} />
-
-            <div className="form-group">
-              <label className="questionAddLabel" htmlFor="questionAdd">Answer:</label>
-              <textarea
-                rows="4"
-                cols="100"
-                className="answerField"
-                id="answerAdd"
-                name="answerAdd"
-                onChange={handleAddCardChange}
-                value={cardAdd.answerAdd}
-              />
-              <CharCounter maxChars={configs.maxCharsAnswer} chars={cardAdd.answerAdd} />
-
-            </div>
-
-            <div style={{clear:"both"}} />
-
-            <HintCategoryDD
+            <Card
+              handleCardChange={handleAddCardChange}
+              question={cardAdd.question}
+              answer={cardAdd.answer}
               handleHintCategoryChange={handleAddHintCategoryChange}
               hintCategoryArr={hintCategoryArr}
-              selectedAddHintCategory={0}
+              selectedHintCategory={""}
               cardId={0}
-            />
-
-            <Hint
-              hint={cardAdd.hint}
-              handleInputChange={handleAddCardChange}
+              cardObj={''}
             />
 
             <div style={{clear:"both"}} />
@@ -451,53 +406,20 @@ const Tutorial = ({props}) => {
         cardsArr.map((cardObj, index) => (
           <div key={cardObj.id}>
           <form>
-            <div className="form-group">
-              <label className="questionEditLabel" htmlFor="questionEdit">{cardsArr.length - index}.) Question:</label>
-              <textarea
-                rows="4"
-                cols="100"
-                className="questionField"
-                id="questionEdit"
-                name="question"
-                onChange={(event) => handleEditCardChange(event, cardObj)}
-                value={cardObj.question}
-              />
-              <CharCounter maxChars={configs.maxCharsQuestion} chars={cardObj.question} />
-            </div>
-            <div style={{clear:"both"}} />
 
-            <div className="form-group">
-              <label className="answerEditLabel" htmlFor="answerEdit">Answer:</label>
-              <textarea
-                rows="4"
-                cols="100"
-                className="answerField"
-                id="answerEdit"
-                name="answer"
-                onChange={(event) => handleEditCardChange(event, cardObj)}
-                value={cardObj.answer}
-              />
-              <CharCounter maxChars={configs.maxCharsAnswer} chars={cardObj.answer} />
-
-            </div>
-
-            <div style={{clear:"both"}} />
-
-            <HintCategoryDD
+            <label className="questionEditLabel" htmlFor="questionEdit">{cardsArr.length - index}.) Question:</label>
+            <Card
+              handleCardChange={(event) => handleEditCardChange(event, cardObj)}
+              question={cardObj.question}
+              answer={cardObj.answer}
               handleHintCategoryChange={handleEditHintCategoryChange}
               hintCategoryArr={hintCategoryArr}
               selectedHintCategory={cardObj.hintCategoryId}
               cardId={cardObj.id}
-            />
-
-            <Hint
-              hint={cardObj.hint}
-              handleInputChange={handleEditCardChange}
               cardObj={cardObj}
             />
 
             <div style={{clear:"both"}} />
-
 
             {currentTutorial.published ? (
               <div className="updateCardPublishNotice">

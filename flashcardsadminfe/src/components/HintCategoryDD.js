@@ -18,7 +18,12 @@ function HintCategoryDD({handleHintCategoryChange, hintCategoryArr, selectedHint
             value={hintCategoryObj.id}
           >{hintCategoryObj.hintCategory}</option>
       })}
-      </select> <a href="https://flashcards.ezcg.com/hints.html" target="_blank" className="infolink">&#9432;</a>
+      </select> <a
+        href="https://flashcards.ezcg.com/hints.html"
+        target="_blank"
+        className="infolink"
+        rel="noopener noreferrer"
+      >&#9432;</a>
       </div>
     )
 
