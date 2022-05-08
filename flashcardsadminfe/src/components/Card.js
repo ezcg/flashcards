@@ -5,7 +5,7 @@ import HintCategoryDD from './HintCategoryDD'
 import Hint from './Hint'
 
 const Card = ({handleCardChange, question, answer, handleHintCategoryChange, hintCategoryArr, selectedHintCategory, cardId, cardObj}) => {
-
+console.log("cardObj",cardObj)
   return <div key={cardId}>
     <div className="form-group">
     <label className="questionLabel" htmlFor="question">Question:</label>
@@ -49,7 +49,6 @@ const Card = ({handleCardChange, question, answer, handleHintCategoryChange, hin
   />
 
   <Hint
-    hint={cardObj.hint}
     handleInputChange={handleCardChange}
     cardObj={cardObj}
   />

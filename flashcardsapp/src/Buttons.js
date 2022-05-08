@@ -21,7 +21,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   if (viewHintBool) {
     questionBg = '#ffffff';
     hintBg = '#cccccc';
-    disableNonHintBtn = true
+    //disableNonHintBtn = true
   } else if (view === 'q') {
     questionBg = '#cccccc';
   } else if (view === 'a') {

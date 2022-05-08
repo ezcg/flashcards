@@ -381,7 +381,7 @@ const Tutorial = ({props}) => {
               hintCategoryArr={hintCategoryArr}
               selectedHintCategory={""}
               cardId={0}
-              cardObj={''}
+              cardObj={{}}
             />
 
             <div style={{clear:"both"}} />

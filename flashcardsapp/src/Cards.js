@@ -39,30 +39,37 @@ const Cards = () => {
 
   const nextCard = function() {
     let tmpCardNum = (cardNum + 1 === cardArr.length) ? 0 : cardNum + 1;
+    console.log("nextCard() cardNum:", cardNum, "cardArr.length:", cardArr.length, "tmpCardNum:", tmpCardNum)
     setCardNum(tmpCardNum)
     setView('q')
+    setViewHintBool(false);
   }
 
   const prevCard = function() {
+    console.log("prevCard()")
     let tmpCardNum = (cardNum - 1 > 0) ? cardNum - 1 : cardArr.length - 1;
     setCardNum(tmpCardNum)
     setView('q')
+    setViewHintBool(false);
   }
 
   const clickView = function() {
+    console.log("clickView()")
     if (view === 'a') {
       setView('q')
     } else if (view === 'q') {
       setView('a');
     }
+    setViewHintBool(false);
   }
 
   const handleViewHint = function() {
+    console.log("handleViewHint()")
     if (viewHintBool) {
       setViewHintBool(false);
     } else {
       setViewHintBool(true);
-      setView('q')
+      //setView('q')
     }
   }
 
@@ -71,6 +78,7 @@ const Cards = () => {
   } else if (!isLoaded) {
     return null
   } else {
+    console.log("view", view, "nextCard() cardNum:", cardNum, cardArr[cardNum])
 
     return (
 

@@ -118,7 +118,7 @@ pre {
 }
 
 .card {
-  height:400px;
+  height:380px;
 }
 
 @media screen and (max-width: 700px) {
