@@ -115,8 +115,8 @@ exports.addCard = async (req, res) => {
   let tutorialObj = resultObj.tutorialObj;
 
   let numCards = await Card.count({where: {tutorialId: req.body.id}});
-  if (numCards >= 20) {
-    return res.status(400).send({message:`You've already created 20 flashcards which is the max per tutorial. Feel free to make a sequel.`});
+  if (numCards >= 30) {
+    return res.status(400).send({message:`You've already created 30 flashcards which is the max per tutorial. Feel free to make a sequel.`});
   }
 
   const card = {

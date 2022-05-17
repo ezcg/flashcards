@@ -2,10 +2,9 @@ import React from "react";
 import CharCounter from './CharCounter'
 import configs from '../configs'
 import HintCategoryDD from './HintCategoryDD'
-import Hint from './Hint'
 
-const Card = ({handleCardChange, question, answer, handleHintCategoryChange, hintCategoryArr, selectedHintCategory, cardId, cardObj}) => {
-console.log("cardObj",cardObj)
+const Card = ({handleCardChange, question, answer, handleHintCategoryChange, hintCategoryArr, selectedHintCategory, cardId, cardObj, hintText}) => {
+
   return <div key={cardId}>
     <div className="form-group">
     <label className="questionLabel" htmlFor="question">Question:</label>
@@ -48,10 +47,18 @@ console.log("cardObj",cardObj)
     cardId={cardId}
   />
 
-  <Hint
-    handleInputChange={handleCardChange}
-    cardObj={cardObj}
-  />
+  <div className="form-group hintCont">
+    <label className="hintLabel" htmlFor="hintField">Hint:</label>
+    <input
+      type="text"
+      className="hintText"
+      id="hintField"
+      value={hintText}
+      onChange={handleCardChange}
+      name="hint"
+    />
+    <CharCounter maxChars={configs.maxCharsHint} chars={hintText} />
+  </div>
 
 </div>
 

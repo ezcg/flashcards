@@ -10,6 +10,7 @@ import {
 import TutorialNoEdit from "./TutorialNoEdit";
 import AuthService from "../services/auth.service";
 import TutorialTopLevel from './TutorialTopLevel'
+import configs from '../configs'
 
 const Tutorial = ({props}) => {
 
@@ -213,19 +214,12 @@ const Tutorial = ({props}) => {
 
     TutorialDataService.addCard(data)
     .then(response => {
-      setCardAdd({...cardsArr,
-        id: response.data.id,
-        cardId: response.data.cardId,
-        question: response.data.question,
-        answer: response.data.answer,
-        hint: response.data.hint,
-        hintCategoryId: response.data.hintCategoryId
-      });
-      setMessageAddCard("Added!");
-      setCardAdd({question:"", answer:"", hint:"", hintCategoryId:0});
-      let tmpCardsArr = [...cardsArr];
-      tmpCardsArr.push(response.data);
-      setCardsArr(tmpCardsArr);
+      setMessageAddCard("Added!")
+      setCardAdd({question:"", answer:"", hint:"", hintCategoryId:0})
+      let tmpCardsArr = [...cardsArr]
+      tmpCardsArr.push(response.data)
+      let tmpCardsArrReversed = tmpCardsArr.reverse()
+      setCardsArr(tmpCardsArrReversed)
     })
     .catch(e => {
       setMessageObj({message:"", success:0, errorObj:e});
@@ -306,7 +300,7 @@ const Tutorial = ({props}) => {
 
             <b>Tutorial Publish Status:</b> {currentTutorial.published ? "Published" : "Not published"}
             &nbsp;
-            | <b># Flashcards:</b> {cardsArr.length} (Max 20)
+            | <b># Flashcards:</b> {cardsArr.length} (Max {configs.maxQuestions})
           </form>
 
           {currentTutorial.published ? (
@@ -365,10 +359,10 @@ const Tutorial = ({props}) => {
         <div>
           <span className="addLabel">Add Flashcard</span>
           <br />
-          {cardsArr.length >= 20 ? (
-            <div className="maxFlashcardsMsg">You've made 20 flashcards which is the maximum number of flashcards you can
+          {cardsArr.length >= configs.maxQuestions ? (
+            <div className="maxFlashcardsMsg">You've made {configs.maxQuestions} flashcards which is the maximum number of flashcards you can
               have per tutorial. Well done!</div>
-          ) : (currentTutorial.published && cardsArr.length < 20 ? (
+          ) : (currentTutorial.published && cardsArr.length < configs.maxQuestions ? (
             <div className="addFlashcardsUnpublishNotice">You must hit the Unpublish button above before you can add
               more flashcards to this tutorial. Once you're done adding cards, you Publish it again.</div>
             ) : (
@@ -382,6 +376,7 @@ const Tutorial = ({props}) => {
               selectedHintCategory={""}
               cardId={0}
               cardObj={{}}
+              hintText={cardAdd.hint}
             />
 
             <div style={{clear:"both"}} />
@@ -417,6 +412,7 @@ const Tutorial = ({props}) => {
               selectedHintCategory={cardObj.hintCategoryId}
               cardId={cardObj.id}
               cardObj={cardObj}
+              hintText={cardObj.hint}
             />
 
             <div style={{clear:"both"}} />

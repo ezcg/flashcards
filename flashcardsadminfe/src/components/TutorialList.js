@@ -229,7 +229,7 @@ const TutorialList = ({props}) => {
             rel="noopener noreferrer"
             href={configs.flashcardsappurl}
             target="_blank"
-          >public categories list</a>, not just the 'Take' button. Once distributed, they can no longer be edited by regular users.
+          >public categories list</a>, not just the 'Take' button.
           </div>
             <div style={{clear:"both"}} />
           </div>
@@ -274,7 +274,9 @@ const TutorialList = ({props}) => {
                 key={index}
               >
                 <div >
-                <span className="listTitle">{tutorial.title}</span> by {tutorial.user.username} ({tutorial.numCards} cards) in {tutorial.category}:<b>{tutorial.subcategory}</b>
+                <span className="listTitle">{tutorial.title}</span> by {tutorial.user.username} ({tutorial.numCards} cards) in
+                <br />
+                  {tutorial.category}:<b>{tutorial.subcategory}</b>
                 <br />
                 <div className="listDesc">
                   {tutorial.description}

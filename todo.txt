@@ -1,7 +1,6 @@
 Make more noticable:
     make some messaging disappear after time limit. eg. 'Updated' should disappear after 10 seconds.
     after update card button pushed, 'Updated' message needs better spacing and bolder
-    most recently added card appears first in list when editing. See what you just added without having to scroll down
     make "You've made 20 flashcards which is the maximum number of flashcards you can have per tutorial. Well done!" more visible
     what to do about cloudfront caching - don't cache .json files?
     make Question visibly different from Answer in edit mode
@@ -16,6 +15,6 @@ Tutorial:
 - beanstalk, ssl for all, db not tied to stack
 
 Nice to have:
-make categories managed via ui and writable as json to s3
+make categories managed via ui and deploy to s3 flashcardsadminbe/app/services/categories.js
 make user access level (roles) managed via ui
 for code dev purposes, create dev s3 bucket that doesn't require cloudfrount and update 's3Url' in flashcardsapp/src/configs.js. accesible via mobile phone
