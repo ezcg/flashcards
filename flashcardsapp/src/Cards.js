@@ -53,11 +53,11 @@ const Cards = () => {
     setViewHintBool(false);
   }
 
-  const clickView = function() {
-    console.log("clickView()")
-    if (view === 'a') {
+  const clickView = function(clickedView) {
+    console.log("clickView()", clickedView)
+    if (view === 'a' && clickedView !== 'a') {
       setView('q')
-    } else if (view === 'q') {
+    } else if (view === 'q' && clickedView !== 'q') {
       setView('a');
     }
     setViewHintBool(false);

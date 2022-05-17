@@ -42,7 +42,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   {/*question   */}
   <button
     className="button"
-    onClick={clickView}
+    onClick={() => clickView(view)}
     css={css`background-color:${questionBg}`}
     disabled={disableNonHintBtn}
   >
