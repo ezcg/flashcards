@@ -4,14 +4,11 @@ import { css, jsx } from '@emotion/core'
 import Arrow from "./Arrow";
 
 export default function Buttons ({ view, clickView, prevCard, nextCard, handleViewHint, viewHintBool, hasHintBool }) {
-
   let buttonHintClass = "buttonHint";
   let answerBg = "#ffffff";
   let questionBg = "#ffffff";
   let hintBg = "#ffffff";
   let answerBtnText = 'A';
-  let answerHandler = clickView;
-  // if there is no hint, disable hint button
   let disableHintBtn = false
   if (hasHintBool === false) {
     disableHintBtn = true;
@@ -28,10 +25,9 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
     // If the 'Answer' but is clicked on, replace the Answer button with a Next button for ease of navigation
     answerBg = '#cccccc';
     answerBtnText = 'Next &raquo;';
-    answerHandler = nextCard;
   }
 
-  return <div className="buttonsCont">
+  return <div className="buttonsCont" key={view}>
 
   <Arrow
     direction="left"
@@ -42,7 +38,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   {/*question   */}
   <button
     className="button"
-    onClick={() => clickView(view)}
+    onClick={() => clickView(view, 'q')}
     css={css`background-color:${questionBg}`}
     disabled={disableNonHintBtn}
   >
@@ -52,7 +48,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   {/*answer  */}
   <button
     className="button"
-    onClick={answerHandler}
+    onClick={() => clickView(view, 'a')}
     css={css`background-color:${answerBg}`}
     disabled={disableNonHintBtn}
   >

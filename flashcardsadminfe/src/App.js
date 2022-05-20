@@ -19,7 +19,7 @@ import LogoutHooks from './components/LogoutHooks';
 import configs from './configs';
 
 const App = () => {
-
+  console.log("React.version:",React.version)
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);

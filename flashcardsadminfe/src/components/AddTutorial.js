@@ -84,7 +84,7 @@ const AddTutorial = () => {
           tutorial={tutorial}
           handleInputChange={handleInputChange}
           handleCategoryChange={handleCategoryChange}
-          selectedSubcategory={0}
+          selectedSubcategory={tutorial.subcategory}
         />
 
         <button onClick={saveTutorial} className="btn btn-success">

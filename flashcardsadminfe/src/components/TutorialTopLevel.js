@@ -4,7 +4,7 @@ import TitleAndDesc from "./TitleAndDesc.js"
 
 const TutorialTopLevel = ({tutorial, handleInputChange, handleCategoryChange, selectedSubcategory}) => {
 
-  return <div>
+  return <div key={selectedSubcategory}>
     <TitleAndDesc tutorial={tutorial} handleInputChange={handleInputChange}/>
 
     <div style={{ clear: "both" }}/>
