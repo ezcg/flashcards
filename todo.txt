@@ -1,3 +1,5 @@
+Update React and fix resultant bugs.
+
 Make more noticable:
     make some messaging disappear after time limit. eg. 'Updated' should disappear after 10 seconds.
     after update card button pushed, 'Updated' message needs better spacing and bolder

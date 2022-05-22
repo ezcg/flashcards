@@ -77,7 +77,8 @@ const Tutorial = ({props}) => {
       TutorialDataService.getCards(id)
       .then(response => {
         setAreCardsLoaded(true);
-        setCardsArr(response.data);
+        let tmpArr = response.data.reverse()
+        setCardsArr(tmpArr);
       })
       .catch(e => {
         setMessageObj({message:"", success:0, errorObj:e});
@@ -210,16 +211,15 @@ const Tutorial = ({props}) => {
       answer: cardAdd.answer,
       hint: cardAdd.hint,
       hintCategoryId: cardAdd.hintCategoryId
-    };
+    }
 
     TutorialDataService.addCard(data)
     .then(response => {
       setMessageAddCard("Added!")
       setCardAdd({question:"", answer:"", hint:"", hintCategoryId:0})
       let tmpCardsArr = [...cardsArr]
-      tmpCardsArr.push(response.data)
-      let tmpCardsArrReversed = tmpCardsArr.reverse()
-      setCardsArr(tmpCardsArrReversed)
+      tmpCardsArr.unshift(response.data)
+      setCardsArr(tmpCardsArr)
     })
     .catch(e => {
       setMessageObj({message:"", success:0, errorObj:e});
