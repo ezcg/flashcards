@@ -160,6 +160,8 @@ const Order = ({props}) => {
                 )}
                 {cardsArr.map((cardObj, index) => {
 
+                  let answer = cardObj.answer.length > 110 ? cardObj.answer.substring(0,107) + "..." : cardObj.answer
+                  let question = cardObj.question.length > 110 ? cardObj.question.substring(0,107) + "..." : cardObj.question
                   const isDragging = state.draggedIndex === index;
                   const top = state.dragOrder.indexOf(index) * (HEIGHT + 10);
                   const draggedTop = state.order.indexOf(index) * (HEIGHT + 10);
@@ -174,9 +176,9 @@ const Order = ({props}) => {
                         isDragging={isDragging}
                         top={isDragging ? draggedTop : top}
                       >
-                      Q:{cardObj.question}
+                      Q:{question}
                       <br />
-                      A:{cardObj.answer}
+                      A:{answer}
                       </Rect>
                     </Draggable>
                   )
