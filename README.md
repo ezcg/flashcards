@@ -21,6 +21,20 @@
 See README.md in flashcardsadminbe for deploying admin backend to Beanstalk.    
 See README.md in flashcardsapp for deploying to S3
 
+If it is the first time doing docker-compose up, you'll need to initialize the db. Once docker-compose up has finished, open a new terminal window on your host machine. In the terminal, change into the s3OnlySite directory and paste the following command into the terminal and hit enter:
+```
+docker exec -it dbflashcards bash -c "cd /app && bash init.sh"
+```
+If you try and call the site in your browser before running the above db_init.sh command, you'll get an error like
+(node:791) UnhandledPromiseRejectionWarning: #<Object> ...
+
+Unless you do a destroy or build command, the database will persist in between your use of the app.
+
+However, back up your data. To back up your data, on the host machine, open your command line terminal and change into the s3OnlySite  directory. Paste this into the terminal and hit enter:
+```
+docker exec -it dbflashcards bash -c "cd /app && bash dump.sh"
+```
+
 http://localhost:8081 - frontend that calls the backend at http://localhost:8080
 The app for training yourself with flashcards is at http://localhost:3000
 

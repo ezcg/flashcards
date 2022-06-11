@@ -45,14 +45,14 @@ export default function Categories() {
         {categoryArr.map((category, i) => {
           return <div key={category}><div className="categoryHeader">{category}</div>
             {subcategoryArr[i] && (subcategoryArr[i].map((subcategory, j) => {
-              return <div key={subcategory}>
+              return <div className="subcategoryLinkCont" key={subcategory}>
                 <Link
                   to={"/list/" + subcategory}
-                  className="btn btn-light subcategoryBtn"
-                  style={{textAlign:"left"}}
+                  className="subcategoryLink"
                 >{subcategory}
                 </Link>
-                </div>
+                <div className="cb"></div>
+              </div>
             }))}
           </div>
         })}

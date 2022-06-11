@@ -1,3 +1,6 @@
+body {
+  font-family:Verdana,Arial,Helvetica,Tahoma,Trebuchet,Times;
+}
 .tutorialCategory {
   font-weight:bold;
 }
@@ -38,7 +41,7 @@
   border:2px solid black;
   float:left;
   margin:2px;
-  width:70px;
+  width:60px;
   padding:15px 0px 15px 0px;
   border-radius:15px;
   font-weight:bold;
@@ -62,44 +65,60 @@
 pre {
   white-space: pre-wrap;
 }
-
-.subcategoryBtn {
-  margin:2px 0px 2px 20px;
-  width:290px;
+.subcategoryLinkCont {
+  margin:4px;
+  width:310px;
   text-align:left;
+  border:1px solid black;
+  border-radius:5px;
+  padding:10px;
+  background-color:#cccccc;
 }
-.takeItLink {
+.subcategoryLink {
+  display:block;
+  width:300px;
   text-decoration:none;
   font-weight:bold;
 }
+a.subcategoryLink:active {
+  color:#000000;
+}
+.takeItBtnCont, .drillItBtnCont{
+  display:inline-block;
+  margin-left:10px;
+  border:1px solid black;
+  border-radius:5px;
+  cursor:pointer;
+  padding:10px;
+  background-color:#cccccc;
+}
+.takeItBtn {
+  font-weight:bold;
+}
+.takeItLink, .drillItLink {
+  text-decoration:none;
+  font-weight:bold;
+  color:#000000;
+}
 .listRow {
-  margin-top:5px;
+  margin:10px;
   position:relative;
   border:0px solid black;
 }
 .tutorialTitle{
   font-weight:bold;
   display:inline-block;
-  font-size:18px;
+  font-size:24px;
 }
 .tutorialUsername{
   display:inline-block;
   margin:2px;
 }
-.takeItBtnCont{
-  display:inline-block;
-  margin-left:10px;
-  /*position:absolute;*/
-  /*top:2px;*/
-  /*right:2px;*/
-}
-.takeItBtn {
-  font-weight:bold;
-}
 
 .tutorialDescription{
   display:block;
   margin-left:10px;
+  padding:4px;
 }
 .categoryHeader {
   border:2px solid #ccc;
@@ -115,13 +134,128 @@ pre {
 
 .cardCont {
   height:425px;
+  width:98%;
 }
 
 .card {
+  width:100%;
   height:380px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border:1px solid black;
+  margin:10px;
+  padding:10px;
 }
 
-@media screen and (max-width: 700px) {
+/****************************/
 
+.wrongMark, .rightMark {
+  font-size: 30px;
+  font-weight:bold;
+  text-align: center;
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 5px;
+  z-index: 2;
+  position: absolute;
+  top: -2px;
+  width: 40px;
+  height: 40px;
+  padding-top:4px;
+}
+.wrongMark {
+  right:36%;
+  color: red;
+}
+.rightMark {
+  color:green;
+  left:36%;
+}
+.cardCont {
+  float:left;
+  margin:1px;
+}
+.drillCheckmark {
+  color:black;
+  font-size: 20px;
+  cursor:auto;
+  position:absolute;
+  bottom:10px;
+  right:10px;
+}
+.drillCard {
+  position:relative;
+  border:1px solid black;
+  border-radius:5px;
+  height:260px;
+  padding:15px 4px 2px 4px;
+  cursor:pointer;
+  text-align:left;
+  margin:12px;
+}
+.drillCardCont {
+  width:19.5%;
+  float:left;
+  margin:0px;
+}
+/*.cardCover {*/
+/*  width: 40px;*/
+/*  height: 40px;*/
+/*}*/
+.nextLink {
+  position:absolute;
+  bottom:10px;
+  right:10px;
+}
+.tableCont{
+  margin-left:6px;
+  position:relative;
+}
+
+.scoreContainer {
+  width:300px;
+  margin:5px auto;
+  border:0px solid black;
+}
+.scoreWrong, .scoreCorrect, .msg {
+  color:red;
+  padding:5px;
+  font-weight:bold;
+  display:inline-block;
+  float:left;
+  border:0px solid black;
+}
+.msg {
+  float:left;
+  width:320px;
+  margin:0px auto;
+  color:#000000;
+  font-weight:bold;
+  border:0px solid black;
+  text-align:center;
+}
+.scoreWrong {
+  width:20px;
+}
+.scoreCorrect {
+  margin-left:120px;
+  width:20px;
+  color:green;
+}
+
+.restartBtn {
+  text-align:center;
+  padding:8px;
+  margin:4px 160px 4px 4px;
+  width:120px;
+  border:2px solid black;
+  border-radius:5px;
+  cursor:pointer;
+  background-color:#dddddd;
+  float:right;
+}
+button.restartBtn:hover {
+  background-color:#A9A9A9;
 }
 

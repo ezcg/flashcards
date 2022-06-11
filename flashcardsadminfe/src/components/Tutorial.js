@@ -15,6 +15,7 @@ import configs from '../configs'
 const Tutorial = ({props}) => {
 
   const initialTutorialState = {
+    canDrillIt:0,
     id: null,
     title: "",
     description: "",
@@ -42,7 +43,8 @@ const Tutorial = ({props}) => {
     question: "",
     answer: "",
     hint: "",
-    hintCategory:0
+    hintCategory:0,
+    canDrillIt:0
   };
   const [cardAdd, setCardAdd] = useState(initialAddCardState);
 
@@ -102,7 +104,13 @@ const Tutorial = ({props}) => {
     isTutorialLoading,
     areHintCategoriesLoading,
     areHintCategoriesLoaded
-  ]);
+  ])
+
+  const handleDrillItChange = event => {
+    const { checked } = event.target
+    let drillIt = checked ? 1 : 0
+    setCurrentTutorial({ ...currentTutorial, canDrillIt: drillIt });
+  }
 
   const handleTutorialChange = event => {
     const { name, value } = event.target;
@@ -296,6 +304,7 @@ const Tutorial = ({props}) => {
               handleInputChange={handleTutorialChange}
               handleCategoryChange={handleCategoryChange}
               selectedSubcategory={currentTutorial.subcategory}
+              handleDrillItChange={handleDrillItChange}
             />
 
             <b>Tutorial Publish Status:</b> {currentTutorial.published ? "Published" : "Not published"}

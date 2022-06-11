@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core'
-
 export default function Card ({ cardObj, view, viewHintBool }) {
 
   if (!cardObj) {
@@ -15,18 +12,8 @@ export default function Card ({ cardObj, view, viewHintBool }) {
     output = "<pre>" + cardObj.answer + "</pre>";
   }
 
-  return <div className="card"
-    css={css`
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      border:1px solid black;
-      margin:10px;
-      padding:10px;
-    `}
-  >
-
-  <div style={{clear:"both"}} dangerouslySetInnerHTML={{ __html: output }} />
+  return <div className="card">
+    <div style={{clear:"both"}} dangerouslySetInnerHTML={{ __html: output }} />
   </div>
 }
 

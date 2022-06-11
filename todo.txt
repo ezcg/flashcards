@@ -1,4 +1,7 @@
-Update React and fix resultant bugs.
+flashcardsadminfe - Update React and fix resultant bugs.
+
+Enable distribute regardless of flashcards already being distributed - if a set of flashcards is unpublished, the
+ability to distribute and remove the flashcards needs to be enabled.
 
 Make more noticable:
     make some messaging disappear after time limit. eg. 'Updated' should disappear after 10 seconds.

@@ -24,6 +24,7 @@ export default function TitleAndDesc({tutorial, handleInputChange}) {
   <br />
 
   <div className="form-group">
+    <br/>
     <label htmlFor="description">Description</label>
     <input
       type="text"

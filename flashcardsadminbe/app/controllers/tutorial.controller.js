@@ -138,7 +138,7 @@ exports.addCard = async (req, res) => {
     });
   });
 
-};
+}
 
 exports.updateCard = async (req, res) => {
 
@@ -186,7 +186,7 @@ exports.updateCard = async (req, res) => {
     });
   }
 
-};
+}
 
 // Delete a card with the specified id in the request
 exports.deleteCard = async (req, res) => {
@@ -213,7 +213,7 @@ exports.deleteCard = async (req, res) => {
     res.status(500).send({message: "Could not delete Card with id=" + cardId + " and userId=" + req.validatedUserId});
   });
 
-};
+}
 
 // Create and Save a new Tutorial
 exports.create = async (req, res) => {
@@ -261,7 +261,7 @@ exports.create = async (req, res) => {
           err.message || "Some error occurred while creating the Tutorial."
       });
     });
-};
+}
 
 const getPagination = (page, size) => {
   // 5 is the default limit
@@ -270,7 +270,7 @@ const getPagination = (page, size) => {
   let offset = page ? page * limit : 0;
 
   return { limit, offset };
-};
+}
 
 const getPagingData = (data, page, limit) => {
   const { count: totalItems, rows: tutorials } = data;
@@ -278,7 +278,7 @@ const getPagingData = (data, page, limit) => {
   const totalPages = Math.ceil(totalItems / limit);
 
   return { totalItems, tutorials, totalPages, currentPage };
-};
+}
 
 // Retrieve all Tutorials or all of a users tutorials from the database.
 exports.findAll = async (req, res) => {
@@ -343,7 +343,7 @@ exports.findAll = async (req, res) => {
     });
   });
 
-};
+}
 
 // Find a single Tutorial with an id
 exports.findOne = async (req, res) => {
@@ -353,7 +353,7 @@ exports.findOne = async (req, res) => {
     return;
   }
   res.send(resultObj.tutorialObj);
-};
+}
 
 // create a json list of tutorials
 const updateList = () => {
@@ -390,6 +390,7 @@ const updateList = () => {
           arr[i].createdAt = tmp.createdAt;
           arr[i].updatedAt = tmp.updatedAt;
           arr[i].numCards = numCards;
+          arr[i].canDrillIt = tmp.canDrillIt;
         }
         return arr;
       } catch(e) {
@@ -467,7 +468,7 @@ exports.update = async (req, res) => {
     });
   });
 
-};
+}
 
 exports.publish = async (req, res) => {
 
@@ -574,7 +575,7 @@ exports.delete = async (req, res) => {
   }).catch(err => {
     res.status(500).send({message: "Could not delete Tutorial with id=" + tutorialId});
   });
-};
+}
 
 // Send all published=1 tutorials to list.json so that they may be accessed via main public category list
 exports.distribute = async (req, res) => {
@@ -594,7 +595,7 @@ exports.getCategoryArr = (req, res) => {
   let categoryArr = categoriesService.setCategoryArr();
   let categoryJson = JSON.stringify(categoryArr);
   res.send(categoryJson);
-};
+}
 
 exports.getHintCategoryArr = (req, res) => {
 
@@ -606,4 +607,4 @@ exports.getHintCategoryArr = (req, res) => {
           err.message || "Some error occurred while retrieving tutorials."
       });
     });
-};
+}

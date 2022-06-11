@@ -14,7 +14,11 @@ module.exports = (sequelize, Sequelize) => {
     },
     subcategory: {
       type: Sequelize.STRING
+    },
+    canDrillIt: {
+      type: Sequelize.INTEGER
     }
+
   });
   return Tutorial;
 };

@@ -1,6 +1,4 @@
-/** @jsx jsx */
 import { useState, useEffect } from 'react'
-import { jsx } from '@emotion/core'
 import Card from './Card'
 import Buttons from './Buttons'
 import configs from "./configs"
@@ -25,6 +23,7 @@ const Cards = () => {
         .then(res => res.json())
         .then(
           (result) => {
+            console.log(result)
             setTutorialObj(result);
             setCardArr(result.flashcards);
             setIsLoaded(true);
@@ -77,15 +76,15 @@ const Cards = () => {
   } else {
 
     return (
-
+      <div>
+      <div className="header">
+        <Link to="/">
+          <img className='homeIcon' src={homeIcon} alt="Home" />
+        </Link>
+        <div className="tutorialCategory"> {tutorialObj.subcategory}: &nbsp;{tutorialObj.title}</div>
+        <span>On Question #: {cardNum + 1} of {cardArr.length}</span>
+      </div>
       <div key="main" className="cardCont">
-        <div className="header">
-          <Link to="/">
-            <img className='homeIcon' src={homeIcon} alt="Home" />
-          </Link>
-          <div className="tutorialCategory"> {tutorialObj.subcategory}: &nbsp;{tutorialObj.title}</div>
-          <span>On Question #: {cardNum + 1} of {cardArr.length}</span>
-        </div>
         {cardArr.map((cardObj, i) => (
           i === cardNum ? (
             <div key={"key_" + i}>
@@ -106,7 +105,7 @@ const Cards = () => {
             </div>
           ) : ("")
         ))}
-
+      </div>
       </div>
 
     )

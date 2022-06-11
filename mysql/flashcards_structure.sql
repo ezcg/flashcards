@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.32, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.37, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: flashcards
 -- ------------------------------------------------------
--- Server version	5.7.32
+-- Server version	5.7.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,9 +40,9 @@ CREATE TABLE `cards` (
   `updatedAt` datetime NOT NULL,
   `rank` tinyint(4) DEFAULT '0',
   `hintCategoryId` int(11) DEFAULT '0',
-  `hint` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hint` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=382 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=605 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS `hint_categories`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hint_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hintcategory` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `hintCategory` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `explanation` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -112,7 +112,7 @@ CREATE TABLE `tutorials` (
   `userId` int(11) NOT NULL,
   `subcategory` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,4 +183,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-11  2:58:01
+-- Dump completed on 2022-06-08 16:12:09

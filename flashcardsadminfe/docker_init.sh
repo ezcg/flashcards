@@ -4,5 +4,7 @@
 #cd /app
 #chown -R dockeruser:dockeruser *
 rm -fr node_modules
-npm install
+#npm install
+#npm run-script startdev
+yarn install
 npm run-script startdev

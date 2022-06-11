@@ -1,5 +1,4 @@
 import React from 'react'
-import configs from "./configs"
 
 const ListRow = ({tutorialObj}) => {
 
@@ -11,16 +10,31 @@ const ListRow = ({tutorialObj}) => {
         <div className="tutorialUsername"> {tutorialObj.username} ({tutorialObj.numCards} Cards)</div>
         <div className="tutorialDescription">{tutorialObj.description}</div>
         <div className="takeItBtnCont">
-        <a
-          rel="noopener noreferrer"
-          href={configs.url + tutorialObj.tutorialId.toString()}
-        >
-          <div className="btn btn-info">
-          <span className="takeItBtn">Take it &raquo;</span>
-          </div>
-        </a>
+          <a
+            className="takeItLink"
+            rel="noopener noreferrer"
+            href={"/" + tutorialObj.tutorialId.toString()}
+          >
+            <div className="">
+              <span className="takeItBtn">Take it &raquo;</span>
+            </div>
+          </a>
         </div>
+        {tutorialObj.canDrillIt !== 0 &&
+          <div className="drillItBtnCont">
+            <a
+              className="drillItLink"
+              rel="noopener noreferrer"
+              href={"/drilltable/" + tutorialObj.tutorialId.toString()}
+            >
+              <div className="">
+                <span className="takeItBtn">Drill it &raquo;</span>
+              </div>
+            </a>
+          </div>
+        }
       </div>
+      <hr/>
     </div>
 
   )

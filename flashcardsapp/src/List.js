@@ -33,9 +33,7 @@ const List = () => {
   } else if (!isLoaded) {
     return null;
   } else {
-
     return (
-
       <div key="main" className="container">
         <div className='categoryHeader'>{subcategory}</div>
         {tutorialsArr.map((obj, i) => {
@@ -47,7 +45,6 @@ const List = () => {
           />
         })}
       </div>
-
     )
   }
 }

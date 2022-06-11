@@ -40,6 +40,9 @@ if [[ -f "package-lock.json" ]]; then
   rm package-lock.json
 fi
 
-npm install
-npm run startdev
+#npm install
+#npm audit fix
+#npm run startdev
+yarn install
+yarn run startdev
 
