@@ -4,9 +4,9 @@ const maxCharsTitle = 70;
 const minCharsTitle = 3;
 const maxCharsDescription = 200;
 const minCharsDescription = 10;
-const maxCharsQuestion = 300;
+const maxCharsQuestion = 1200;
 const minCharsQuestion = 1;
-const maxCharsAnswer = 450;
+const maxCharsAnswer = 950;
 const minCharsAnswer = 1;
 const maxCharsHint = 255;
 

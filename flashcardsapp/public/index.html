@@ -25,6 +25,28 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Flashcards by ezcg.com</title>
+    <script>
+      var body = document.getElementsByTagName('body')[0],
+        x = window.innerWidth || document.documentElement.clientWidth || body.clientWidth,
+        y = window.innerHeight|| document.documentElement.clientHeight || body.clientHeight;
+      winX = x
+      winY = y
+      try {
+        console.log("window.innerWidth", window.innerWidth, "window.innerHeight", window.innerHeight)
+      } catch(e) {
+        console.log("no window. dimension", e)
+      }
+      try {
+        console.log("document.documentElement.clientWidth", document.documentElement.clientWidth, "document.documentElement.clientHeight", document.documentElement.clientHeight)
+      } catch(e) {
+        console.log("no document.documentElement dimension", e)
+      }
+      try {
+        console.log("body.clientWidth", body.clientWidth, "body.clientHeight", body.clientHeight)
+      } catch(e) {
+        console.log("no document.getElementsByTagName('body')[0] dimensions", e)
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

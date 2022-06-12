@@ -1,4 +1,5 @@
 const { authJwt } = require("../middleware");
+const tutorialController = require('../controllers/tutorial.controller')
 
 module.exports = app => {
 
@@ -15,6 +16,9 @@ module.exports = app => {
   var router = require("express").Router();
 
   // TUTORIAL
+
+  // MULTIPLE CHOICE
+  router.get("/parsefile", tutorialController.parseFile);
 
   // Create a new Tutorial
   router.post("/", [authJwt.verifyToken], tutorialController.create);
@@ -64,6 +68,8 @@ module.exports = app => {
   router.put("/updatecard/:tutorialId", [authJwt.verifyToken], tutorialController.updateCard);
 
   router.delete("/deletecard/:id", [authJwt.verifyToken], tutorialController.deleteCard);
+
+
 
   app.use('/api/tutorials', router);
 

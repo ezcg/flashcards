@@ -194,7 +194,7 @@ export default function Drilltable () {
   } else if (isSetDone) {
     nextSetBtnStyle = {display:"block"}
   }
-console.log("gameover",gameover, "totalRight", totalRight)
+console.log("gameover",gameover, "totalRight", totalRight, "totalCards", flashcardsArr.length)
   return <div className="tableCont" key={"key_" + activeCardsArr.length + "_" + isSetDone + "_" + gameover}>
     <div className="msg">{message}</div>
     <Scoreboard />

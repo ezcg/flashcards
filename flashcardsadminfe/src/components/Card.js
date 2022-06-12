@@ -9,7 +9,7 @@ const Card = ({handleCardChange, question, answer, handleHintCategoryChange, hin
     <div className="form-group">
     <label className="questionLabel" htmlFor="question">Question:</label>
     <textarea
-      rows="4"
+      rows="14"
       cols="100"
       className="questionField"
       id="question"

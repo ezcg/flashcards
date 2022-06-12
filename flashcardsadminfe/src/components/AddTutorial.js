@@ -14,10 +14,17 @@ const AddTutorial = () => {
     title: "",
     description: "",
     published: false,
-    subcategory: ""
+    subcategory: "",
+    canDrillIt:0
   };
   const [tutorial, setTutorial] = useState(initialTutorialState);
   const [messageObj, setMessageObj] = useState({message:"", success:0, errorObj:{}});
+
+  const handleDrillItChange = event => {
+    const { checked } = event.target
+    let drillIt = checked ? 1 : 0
+    setTutorial({ ...tutorial, canDrillIt: drillIt });
+  }
 
   const handleInputChange = event => {
     let { name, value } = event.target;
@@ -85,6 +92,7 @@ const AddTutorial = () => {
           handleInputChange={handleInputChange}
           handleCategoryChange={handleCategoryChange}
           selectedSubcategory={tutorial.subcategory}
+          handleDrillItChange={handleDrillItChange}
         />
 
         <button onClick={saveTutorial} className="btn btn-success">

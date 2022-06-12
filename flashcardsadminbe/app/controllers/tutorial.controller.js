@@ -12,6 +12,8 @@ const awsService = require("../services/aws");
 const validateHelper = require("../helpers/validate");
 const Roles = require("../config/roles.config.js");
 
+const fs = require('fs');
+
 /*
 
 ACCESS LEVELS
@@ -607,4 +609,73 @@ exports.getHintCategoryArr = (req, res) => {
           err.message || "Some error occurred while retrieving tutorials."
       });
     });
+}
+
+exports.parseFile = async (req, res) => {
+  let data = fs.readFileSync('multiplechoiceqanda2.txt', {encoding:'utf8', flag:'r'})
+  data = data.replace(/.*2022 Digital Cloud Training ?\r\n/, "")
+  let r = data.match(/QUESTION [0-9]+.*?\r\nAnswer: .*?\r\n+/sg)
+  for (let i = 0; i < r.length; i++) {
+    if (i === 0) continue;
+    let block = r[i]
+    block = block.replace(/QUESTION \d+ \r\n/, "")
+    let x = block.match(/Select TWO/)
+    if (x) {
+      console.log("Select TWO", i)
+continue
+    } else {
+      //continue
+    }
+    let answer = block.match(/(Answer: )([1-4]), ?([1-4])/)
+    let answerLine = ""
+    if (answer == null) {
+      answer = block.match(/(Answer: )([1-4])/)
+      //console.log("answer", answer[2])
+      let str = new RegExp(answer[2] + ". .*")
+      //console.log("regex str", str)
+      answerLine = block.match(str)
+      //console.log("answerLine", answerLine)
+      //console.log("answer", answer[0])
+      console.log("X----------")
+    } else {
+      console.log("Y----------")
+      let str = new RegExp(answer[2] + ". .*")
+      let answerLine = block.match(str) + "\r\n"
+      str = new RegExp(answer[3] + ". .*")
+      answerLine+= block.match(str)
+      console.log("2 answers:\r\n", answerLine)
+    }
+    //block = block.replace(/Answer: .*/, "")
+    //console.log(block)
+    //console.log("answer", answer[2])
+    //let str = new RegExp(answer[2] + ". .*")
+    //console.log("regex str", str)
+    //let answerLine = block.match(str)
+    //console.log("answerLine", answerLine)
+    //console.log("answer", answer[0])
+
+    // console.log("----------")
+    // const card = {
+    //   question: block,
+    //   answer: answerLine[0],
+    //   tutorialId:65,
+    //   published:1,
+    //   hint:"",
+    //   hintCategoryId:0
+    // };
+    //console.log("card", card)
+
+    // Card.create(card)
+    //   .then(data => {
+    //     console.log("created", data)
+    //   })
+    //   .catch(err => {
+    //     res.status(500).send({message:
+    //         err.message || "Some error occurred while creating the card."
+    //     });
+    //   });
+
+  }
+
+  res.sendStatus(200)
 }
