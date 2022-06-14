@@ -26,17 +26,24 @@ export default function Drill ({wrongArr, restart, gameover}) {
     }
   }
   let text
+  let drillCardStyle = {"backgroundColor":'#cccccc'}
   if (currentCard + 2 > wrongArr.length) {
     doDrill = 0
   } else {
     text = wrongTermObj.whatis
     if (view !== 'term') {
       text = wrongDefObj.whatis
+      drillCardStyle = {'backgroundColor':"lightblue"}
     }
   }
 
   let restartBtnStyle = !doDrill ? {display:'block'} : {display:'none'};
-  let drillCardStyle = doDrill ? {display:'block'} : {display:"none"}
+  if (doDrill) {
+    drillCardStyle.display = 'block'
+  } else {
+    drillCardStyle.display = "none"
+  }
+  drillCardStyle.width = "20%"
   let startOver = gameover ? 1 : 0
   let nextBtnText = gameover ? "Begin again?" : "Next Set"
 

@@ -140,9 +140,12 @@ export default function Drilltable () {
       });
     } else {
       setWrong(wrong + 1);
-      let tmpWrongObj = JSON.parse(JSON.stringify(wrongObj))
-      let tmpActiveCardsObj = JSON.parse(JSON.stringify(activeCardsArr))
-      let tmp2WrongObj = {...tmpWrongObj, ...tmpActiveCardsObj}
+      let tmp2WrongObj = []
+      if (Object.values(wrongObj).length) {
+        tmp2WrongObj = [...wrongObj, ...activeCardsArr]
+      } else {
+        tmp2WrongObj = [...activeCardsArr]
+      }
       setWrongObj(tmp2WrongObj)
       setDisplayWrongMark(1)
     }
