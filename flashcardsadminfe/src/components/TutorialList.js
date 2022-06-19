@@ -50,8 +50,6 @@ const TutorialList = ({props}) => {
     setPage(1);
   }
 
-//console.log('my', props.my, my, 'all', props.all, all, 'unpublishedOnly', unpublishedOnly, props.unpublishedOnly, 'undistributedOnly', undistributedOnly, props.undistributedOnly);
-
   const clearSearch = () => {
     setSearchTitle('');
     setIsLoadToFalse();
@@ -98,6 +96,7 @@ const TutorialList = ({props}) => {
         } else {
           response = await TutorialDataService.getAll(params);
         }
+        console.log(response.data.tutorials)
         setTutorials(response.data.tutorials);
         setCount(response.data.totalPages);
         setIsLoaded(true);

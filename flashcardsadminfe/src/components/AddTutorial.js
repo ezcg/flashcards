@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import { Navigate } from 'react-router-dom'
 import TutorialTopLevel from "./TutorialTopLevel.js"
-
 import Message from "./Message.js"
-
 import TutorialDataService from "../services/TutorialService";
-import  { Redirect } from 'react-router-dom'
 import configs from "../configs";
 
 const AddTutorial = () => {
@@ -76,10 +74,7 @@ const AddTutorial = () => {
   };
 
   if (messageObj.success) {
-    return <Redirect
-      to={{
-        pathname:'/tutorials/' + tutorial.id,
-      }} />
+    return <Navigate to={'/tutorials/' + tutorial.id } />
   }
 
   return (

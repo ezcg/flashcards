@@ -5,7 +5,7 @@ import Message from "./Message";
 import CardBtns from "./CardBtns";
 import {
   Link,
-  useHistory
+  useParams
 } from "react-router-dom";
 import TutorialNoEdit from "./TutorialNoEdit";
 import AuthService from "../services/auth.service";
@@ -13,6 +13,7 @@ import TutorialTopLevel from './TutorialTopLevel'
 import configs from '../configs'
 
 const Tutorial = ({props}) => {
+  const paramsObj = useParams()
 
   const initialTutorialState = {
     canDrillIt:0,
@@ -24,7 +25,6 @@ const Tutorial = ({props}) => {
     hintCategoryArr:[]
   };
 
-  const history = useHistory();
   const [currentTutorial, setCurrentTutorial] = useState(initialTutorialState);
   const [messageObj, setMessageObj] = useState({message:"", success:0, errorObj:{}});
   const [messageAddCard, setMessageAddCard] = useState("");
@@ -92,12 +92,12 @@ const Tutorial = ({props}) => {
     }
 
     if (!isTutorialLoaded && !isTutorialLoading) {
-      getTutorial(props.computedMatch.params.id);
+      getTutorial(paramsObj.id);
     }
     if (!areCardsLoaded && !areCardsLoading) {
-      getCards(props.computedMatch.params.id);
+      getCards(paramsObj.id);
     }
-  }, [props.computedMatch.params.id,
+  }, [paramsObj.id,
     isTutorialLoaded,
     areCardsLoaded,
     areCardsLoading,
@@ -168,7 +168,7 @@ const Tutorial = ({props}) => {
     TutorialDataService.deleteTutorial(currentTutorial.id)
     .then(response => {
       setMessageObj({cardId:0, message:response.data.message, success:0, errorObj: {}});
-      setTimeout(() => {history.push("/tutorials/my")}, 1000);
+      //setTimeout(() => {history.push("/tutorials/my")}, 1000);
     })
     .catch(e => {
       setMessageObj({cardId:0, message:"", success:0, errorObj:e});

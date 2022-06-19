@@ -78,7 +78,7 @@ const getHintCategoryArr = () => {
   return r;
 };
 
-export default {
+let obj = {
   getAll,
   get,
   getMy,
@@ -97,4 +97,6 @@ export default {
   deleteCard,
   getCategoryArr,
   getHintCategoryArr
-};
+}
+
+export default obj

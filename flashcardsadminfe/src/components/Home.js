@@ -1,13 +1,16 @@
-import React from "react";
-import AuthService from "../services/auth.service";
-import configs from "../configs";
+import React from "react"
+import AuthService from "../services/auth.service"
+import configs from "../configs"
+import { useLocation } from 'react-router-dom'
 
-const Home = (props) => {
+const Home = () => {
 
-  const user = AuthService.getCurrentUser();
-  let signInRequiredMsgStyle = {display:'none'};
-  if (props.location.isRedirect) {
-    signInRequiredMsgStyle = {display:'block',color:'red'};
+  const location = useLocation()
+  const { state } = location
+  const user = AuthService.getCurrentUser()
+  let signInRequiredMsgStyle = {display:'none'}
+  if (state && state.isRedirect) {
+    signInRequiredMsgStyle = {display:'block',color:'red'}
   }
 
   return (
@@ -24,7 +27,7 @@ const Home = (props) => {
       {!user ? ("To get started, sign in with Google above.") : ("")}
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

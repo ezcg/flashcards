@@ -23,8 +23,10 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
 
-export default {
+let obj = {
   login,
   logout,
-  getCurrentUser,
-};
+  getCurrentUser
+}
+
+export default obj

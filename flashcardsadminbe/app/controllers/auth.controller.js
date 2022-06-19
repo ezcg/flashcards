@@ -1,19 +1,24 @@
 const db = require("../models");
-const config = require("../config/auth.config");
 const User = db.user;
 let jwt = require("jsonwebtoken");
 const roles = require("../config/roles.config");
+
+//const google = require('googleapis').google;
+
+// Google's OAuth2 client
+//const OAuth2 = google.auth.OAuth2;
+
+const config = require("../config/auth.config");
 /*
  For use with google Oauth2.
  Create user if not found and/or sign user in and return bearer token.
  */
 exports.signin = (req, res) => {
-  let user = {};
-  User.findOne({raw:true,
-    where: {
-      googleId: req.body.googleId
-    }
-  })
+
+  try {
+    let googleId = req.body.sub
+    let user = {};
+    User.findOne({raw:true, where: {googleId: googleId}})
     .then(async user => {
       if (!user) {
         let username = req.body.name.replace(/[^\x00-\x7F]/g, "");
@@ -22,7 +27,8 @@ exports.signin = (req, res) => {
           username: username,
           name:req.body.name,
           imageUrl:req.body.imageUrl,
-          googleId:req.body.googleId
+          googleId:googleId,
+          role:1
         })
         .catch(err => {
           res.status(500).send({ message: err.message });
@@ -52,4 +58,9 @@ exports.signin = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
-};
+
+  } catch (e) {
+    res.status(500).send({ message: err.message });
+  }
+
+}

@@ -7,4 +7,6 @@ rm -fr node_modules
 #npm install
 #npm run-script startdev
 yarn install
+mkdir node_modules/.cache
+chmod -R 777 node_modules/.cache
 npm run-script startdev
