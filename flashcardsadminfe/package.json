@@ -23,6 +23,12 @@
     "validator": "^13.7.0",
     "web-vitals": "^2.1.4"
   },
+  "resolutions": {
+    "autoprefixer": "10.4.5"
+  },
+  "overrides": {
+    "autoprefixer": "10.4.5"
+  },
   "scripts": {
     "startdev": "REACT_APP_ENVIRONMENT=dev react-scripts start",
     "start": "REACT_APP_ENVIRONMENT=prod react-scripts start",

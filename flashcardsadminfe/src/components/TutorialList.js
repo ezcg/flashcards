@@ -96,7 +96,7 @@ const TutorialList = ({props}) => {
         } else {
           response = await TutorialDataService.getAll(params);
         }
-        console.log(response.data.tutorials)
+        //console.log(response.data.tutorials)
         setTutorials(response.data.tutorials);
         setCount(response.data.totalPages);
         setIsLoaded(true);
