@@ -85,11 +85,22 @@ const updateCategory = (data) => {
   return http.put(`/tutorials/updatecategory`, data, { headers: authHeader() });
 }
 
+const deployCategoriesJson = () => {
+  return http.get(`/tutorials/deploycategoriesjson`, { headers: authHeader() });
+}
+
+const getCategoriesJson = () => {
+  return http.get(`/tutorials/getcategoriesjson`, { headers: authHeader() });
+}
+
+
 const getHintCategoryArr = () => {
   return http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} })
 }
 
 let obj = {
+  getCategoriesJson,
+  deployCategoriesJson,
   deleteCategory,
   updateCategory,
   createCategory,

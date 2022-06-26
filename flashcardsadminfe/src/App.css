@@ -16,23 +16,21 @@
   margin:10px;
   color:green;
 }
-
-.deleteCategoryBtn, .submitCategoryBtn {
-
+.parentCategoryEditField {
+  width:319px;
 }
-.deleteCategoryBtn, .submitCategoryBtn, .createChildCategoryBtn, .addCategoryBtn {
-  border:1px solid black;
-  border-radius:5px;
-  padding:6px;
-  margin:2px;
-  cursor:pointer;
-  background-color:#dddddd;
+.deleteCategoryBtn,  .createChildCategoryBtn {
+  margin-left:2px;
 }
-.deleteCategoryBtn:hover, .submitCategoryBtn:hover, .createChildCategoryBtn:hover {
-  background-color:#cccccc;
+
+.addCategoryBtn, .submitCategoryBtn, .deleteCategoryBtn{
+  margin-left:2px;
 }
 .submitCategoryBtn {
-  padding:2px;
+  width:110px;
+}
+.categoryHr {
+  width:535px;
 }
 
 .hintCategory {

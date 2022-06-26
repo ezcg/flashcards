@@ -5,7 +5,7 @@ const logger = require('./app/services/logger');
 const app = express();
 
 let corsOptions = {
-  origin: ["http://localhost:8081", "http://flashcardsadminfe.ezcg.com", "https://flashcardsadminfe.ezcg.com"]
+  origin: ["http://localhost:3000", "http://localhost:8081", "http://flashcardsadminfe.ezcg.com", "https://flashcardsadminfe.ezcg.com"]
 };
 
 app.use(cors(corsOptions));

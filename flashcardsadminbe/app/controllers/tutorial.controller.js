@@ -12,8 +12,7 @@ const categoriesService = require("../services/categories");
 const awsService = require("../services/aws");
 const validateHelper = require("../helpers/validate");
 const Roles = require("../config/roles.config.js");
-
-const fs = require('fs');
+const fs = require('fs')
 
 /*
 
@@ -600,8 +599,32 @@ exports.distribute = async (req, res) => {
   }
 }
 
+// via http request, get category object for use in client app
+exports.getCategoriesJson = async (req, res) => {
+  let categoryObj = await getCategoriesJson()
+  res.send(categoryObj)
+}
+
+// get category object for use in client app
+async function getCategoriesJson() {
+  let categoryObj = {}
+  let r = await Categories.findAll({raw:true})
+  if (r.length) {
+    for(let obj of r) {
+      let catChildArr = await Categories.findAll({raw:true, where:{parentId:obj.id}})
+      if (catChildArr.length) {
+        categoryObj[obj.category] = []
+        for(let i in catChildArr) {
+          categoryObj[obj.category].push(catChildArr[i].category)
+        }
+      }
+    }
+  }
+  return categoryObj
+}
+
+// get category object for use in fe admin forms
 exports.getCategories= async (req, res) => {
-  // let categoryArr = categoriesService.setCategoryArr();
   let categoryObj = {}
   let r = await Categories.findAll({raw:true, where:{parentId:0}})
   if (r.length) {
@@ -666,6 +689,22 @@ exports.deleteCategory = (req, res) => {
   }
 }
 
+exports.deployCategoriesJson = async (req, res) => {
+
+  if (!isModerator(req)) {
+    return res.status(400).send({message: "You do not have the access level to do that."});
+  }
+  let categoryObj = await getCategoriesJson()
+  return new Promise((resolve, reject) => {
+    awsService.saveDataToS3(categoryObj, "categories.json")
+      .then((r) => {
+        res.status(200).send(resolve(r))
+      }).catch(e => {
+        res.status(400).send(reject(e))
+      })
+  })
+}
+
 exports.getHintCategoryArr = (req, res) => {
 
   HintCategories.findAll({order: [[Sequelize.literal("hint_categories.id"), 'ASC']]})
@@ -677,8 +716,6 @@ exports.getHintCategoryArr = (req, res) => {
       });
     });
 }
-
-
 
 exports.parseFile = async (req, res) => {
   let data = fs.readFileSync('multiplechoiceqanda2.txt', {encoding:'utf8', flag:'r'})

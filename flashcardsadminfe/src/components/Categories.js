@@ -17,7 +17,6 @@ const Categories = () => {
       setIsLoading(true)
       try {
         TutorialService.getCategories().then(response => {
-          //console.log("response.data", response.data)
           setCategoryObj(response.data)
           if (response.data.totalPages === 0) {
             setMessageObj({ message: "None found. To create one, click 'Create'.", success: 0, errorObj: {} })
@@ -51,7 +50,6 @@ const Categories = () => {
     let newObj = {}
     newObj[obj.id] = obj
     let newCategoryObj = {...categoryObj, ...newObj}
-    console.log("handleCategoryParentEdit", newCategoryObj)
     setCategoryObj(newCategoryObj)
   }
 
@@ -141,13 +139,23 @@ const Categories = () => {
     }
   }
 
-  // wire response from be with status codes to setMessageObj in fe
+  const deployCategories = async (e) => {
+    e.preventDefault()
+    if (window.confirm('Are you sure you wish to make these categories live?')) {
+      TutorialService.deployCategoriesJson().then(r => {
+        setMessageObj({message:"Deployed."})
+      }).catch(e => {
+        setMessageObj({message:JSON.stringify(e)})
+      })
+    }
+  }
 
   if (!isLoading) {
     return null
   }
 
   return (<>
+    <div className="deployCatCont"><button class='btn btn-primary' onClick = {(e) => deployCategories(e)}>Deploy</button> categories to S3</div>
     <div className="categoryMsg">{messageObj.message}</div>
     <h4>Add</h4>
     <div className="createCatForm">
@@ -161,7 +169,7 @@ const Categories = () => {
         value={categoryParentAdd}
         onChange={(e) => setCategoryParentAdd(e.target.value)}
       />
-      <button className="addCategoryBtn">Add</button>
+      <button className="addCategoryBtn btn btn-primary">Add</button>
       </form>
     </div>
     <br/>
@@ -173,26 +181,30 @@ const Categories = () => {
         onSubmit={(e) => submitParentCategoryEdit(e, obj)}
       >
         <input
+          className="parentCategoryEditField"
           type="text"
           name="parentCategoryEdit"
           value={obj.category}
           onChange = {(e) => handleCategoryParentEdit(e, obj)}
         />
-        <button className="submitCategoryBtn">Submit</button>
+        <button className="submitCategoryBtn btn btn-secondary">Submit</button>
         <span
-          className="deleteCategoryBtn"
+          className="deleteCategoryBtn btn btn-danger"
           onClick = {(e) =>deleteParentCategory(e, obj)}
         >Delete</span>
       </form>
 
-      <form className="createChildCategory" onSubmit = {(e) => createChildCategory(e, obj)} >
+      <form
+        className="createChildCategory"
+        onSubmit = {(e) => createChildCategory(e, obj)}
+      >
         <input
           type="text"
           name="categoryChildAdd"
           value={obj.categoryChildAdd}
           onChange = {(e) => handleCategoryChildAdd(e, obj)}
         />
-        <button className="createChildCategoryBtn">Add Child Category</button>
+        <button className="createChildCategoryBtn btn btn-primary">Add Child Category</button>
       </form>
       <div>
       {obj.childArr.length > 0 && obj.childArr.map(childObj => {
@@ -207,15 +219,15 @@ const Categories = () => {
             value={childObj.category}
             onChange = {(e) => handleCategoryChildEdit(e, childObj)}
           />
-          <button className="submitCategoryBtn">Submit</button>
+          <button className="submitCategoryBtn btn  btn-secondary">Submit</button>
           <span
-            className="deleteCategoryBtn"
+            className="deleteCategoryBtn btn btn-danger"
             onClick = {(e) => deleteChildCategory(e, childObj)}
           >Delete</span>
         </form>
       })}
       </div>
-      <hr/>
+      <hr className="categoryHr"/>
       </div>
     })}
     </>)

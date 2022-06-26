@@ -1,3 +1,6 @@
+deploy category json
+backup db to s3 and restore db, all via express
+
 Enable distribute regardless of flashcards already being distributed - if a set of flashcards is unpublished, the
 ability to distribute and remove the flashcards needs to be enabled.
 

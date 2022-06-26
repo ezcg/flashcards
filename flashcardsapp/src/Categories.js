@@ -11,7 +11,13 @@ export default function Categories() {
 
   useEffect(() => {
     if (!isLoaded) {
-      fetch( configs.s3Url + 'json/categories.json')
+      console.log("asdf",window.location.host)
+      let url = configs.s3Url + 'json/categories.json'
+      if ((window.location.host).indexOf("localhost") !== -1) {
+        url = 'http://localhost:8080/api/tutorials/getcategoriesjson'
+      }
+      console.log(url)
+      fetch(url)
       .then(res => res.json())
       .then(
         (result) => {

@@ -1,5 +1,4 @@
 const { authJwt } = require("../middleware");
-const tutorialController = require('../controllers/tutorial.controller')
 
 module.exports = app => {
 
@@ -33,6 +32,10 @@ module.exports = app => {
 
   // Get categories
   router.get("/getcategories", [authJwt.verifyToken], tutorialController.getCategories);
+
+  router.get("/getcategoriesjson", tutorialController.getCategoriesJson);
+
+  router.get("/deploycategoriesjson", [authJwt.verifyToken], tutorialController.deployCategoriesJson);
 
   router.post("/deletecategory", [authJwt.verifyToken], tutorialController.deleteCategory);
 
