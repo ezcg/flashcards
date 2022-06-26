@@ -67,18 +67,28 @@ const findByTitle = params => {
 const findMyByTitle = (params) => {
   let r = http.get("/tutorials/my", { headers: authHeader(), params:params});
   return r;
-};
+}
 
-const getCategoryArr = () => {
-  return http.get(`/tutorials/getcategoryarr`, { headers: authHeader() });
-};
+const getCategories = () => {
+  return http.get(`/tutorials/getcategories`, { headers: authHeader() });
+}
+
+const createCategory = (data) => {
+  return http.post(`/tutorials/createcategory`, data, { headers: authHeader() });
+}
+
+const updateCategory = (data) => {
+  return http.put(`/tutorials/updatecategory`, data, { headers: authHeader() });
+}
 
 const getHintCategoryArr = () => {
-  let r = http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} });
-  return r;
-};
+  return http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} })
+}
 
 let obj = {
+  updateCategory,
+  createCategory,
+  getCategories,
   getAll,
   get,
   getMy,
@@ -95,7 +105,6 @@ let obj = {
   updateCardPublishStatus,
   updateCard,
   deleteCard,
-  getCategoryArr,
   getHintCategoryArr
 }
 

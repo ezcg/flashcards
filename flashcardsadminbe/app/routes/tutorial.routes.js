@@ -32,7 +32,13 @@ module.exports = app => {
   //router.get("/published", [authJwt.verifyToken], tutorialController.findAllPublished);
 
   // Get categories
-  router.get("/getcategoryarr", [authJwt.verifyToken], tutorialController.getCategoryArr);
+  router.get("/getcategories", [authJwt.verifyToken], tutorialController.getCategories);
+
+  // Create category
+  router.post("/createcategory", [authJwt.verifyToken], tutorialController.createCategory)
+
+  // Update category
+  router.put("/updatecategory",[authJwt.verifyToken], tutorialController.updateCategory);
 
   // Get hint categories
   router.get("/gethintcategoryarr", [authJwt.verifyToken], tutorialController.getHintCategoryArr);
@@ -68,8 +74,6 @@ module.exports = app => {
   router.put("/updatecard/:tutorialId", [authJwt.verifyToken], tutorialController.updateCard);
 
   router.delete("/deletecard/:id", [authJwt.verifyToken], tutorialController.deleteCard);
-
-
 
   app.use('/api/tutorials', router);
 

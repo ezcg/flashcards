@@ -5,6 +5,7 @@ import "./App.css";
 import AuthService from "./services/auth.service";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
+import Categories from "./components/Categories";
 import Protected from "./components/Protected";
 // import BoardUser from "./components/BoardUser";
 // import BoardModerator from "./components/BoardModerator";
@@ -77,13 +78,11 @@ const App = () => {
               </Link>
             </li>)}
 
-            {/*{showAdminBoard && (*/}
-            {/*  <li className="nav-item">*/}
-            {/*    <Link to="/admin" className="nav-link" style={{color:"#ffffff"}}>*/}
-            {/*      Admin Board*/}
-            {/*    </Link>*/}
-            {/*  </li>*/}
-            {/*)}*/}
+            {(showModeratorBoard || showAdminBoard) && (<li className="nav-item">
+              <Link to="/tutorials/categories" className="nav-link" style={{color:"#ffffff"}}>
+                Categories
+              </Link>
+            </li>)}
 
       </div>
 
@@ -225,6 +224,16 @@ const App = () => {
                 </Protected>
               }
             />
+
+            <Route
+              path="/tutorials/categories"
+              element={
+                <Protected currentUser={currentUser}>
+                  <Categories />
+                </Protected>
+              }
+            />
+
 
           </Routes>
         </div>

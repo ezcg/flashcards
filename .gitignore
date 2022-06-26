@@ -1,4 +1,6 @@
 .idea
+.github
+.gitaws
 /flashcardsadminbe/app/config/*.config.js
 /flashcardsadminbe/app/config/*.config.env
 node_modules

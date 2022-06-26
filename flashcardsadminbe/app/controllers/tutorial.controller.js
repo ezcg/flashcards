@@ -1,5 +1,6 @@
 const db = require("../models");
 const HintCategories = db.hint_categories;
+const Categories = db.categories;
 const Tutorial = db.tutorial;
 const Card = db.card;
 const TutorialsNumCreated = db.tutorials_num_created;
@@ -43,7 +44,13 @@ async function verifyTutorialAccess(tutorialId, req, res) {
     let maxActions = 300;
     let yyyymmdd = new Date().toISOString().slice(0,10);
     let numAction24Hours = 0;
-    let r = await NumAction.findOrCreate({where:{userId:req.validatedUserId, yyyymmdd:yyyymmdd}, order: 'id DESC'});
+    let r = await NumAction.findOrCreate({
+      where:{
+        userId:req.validatedUserId,
+        yyyymmdd:yyyymmdd
+      },
+      order: [[Sequelize.literal("yyyymmdd"), 'DESC']]
+    });
     if (r[1] === false) {
       numAction24Hours = r[0]['num'];
       await NumAction.increment('num', {where:{userId:req.validatedUserId, yyyymmdd:yyyymmdd}});
@@ -593,10 +600,50 @@ exports.distribute = async (req, res) => {
   }
 }
 
-exports.getCategoryArr = (req, res) => {
-  let categoryArr = categoriesService.setCategoryArr();
-  let categoryJson = JSON.stringify(categoryArr);
-  res.send(categoryJson);
+exports.getCategories= async (req, res) => {
+  // let categoryArr = categoriesService.setCategoryArr();
+  let categoryObj = {}
+  let r = await Categories.findAll({raw:true, where:{parentId:0}})
+  if (r.length) {
+    for(let obj of r) {
+      let catChildArr = await Categories.findAll({raw:true, where:{parentId:obj.id}})
+      categoryObj[obj.id] = {id:obj.id, parentId:0, category:obj.category, childArr:catChildArr, categoryChildAdd:""}
+    }
+  }
+  res.send(categoryObj)
+}
+
+exports.createCategory = (req, res) => {
+  let parentId = req.body.parentId ? req.body.parentId : 0
+  let category = req.body.category
+  Categories.findOne({where: {category:category, parentId:parentId}})
+    .then(r => {
+      if (r) {
+        res.send({ message: "Category: " + category + " already exists"})
+      } else {
+        let obj = {category:category, parentId:parentId}
+        Categories.create(obj).then(r => {
+          let entity = r.get({plain:true})
+          let newObj = {id:entity.id, category:entity.category, parentId:parentId}
+          if (parentId === 0) {
+            newObj.childArr = []
+            newObj.childCategoryAdd = ""
+          }
+          res.send(newObj)
+        })
+      }
+    })
+}
+
+exports.updateCategory = (req, res) => {
+  let id = req.body.id ? req.body.id : 0
+  let parentId = req.body.parentId ? req.body.parentId : 0
+  let category = req.body.category
+  Categories.update({category:category}, {
+    where: { id: id, parentId: parentId}
+  }).then(r => {
+    res.sendStatus(200)
+  })
 }
 
 exports.getHintCategoryArr = (req, res) => {
@@ -610,6 +657,8 @@ exports.getHintCategoryArr = (req, res) => {
       });
     });
 }
+
+
 
 exports.parseFile = async (req, res) => {
   let data = fs.readFileSync('multiplechoiceqanda2.txt', {encoding:'utf8', flag:'r'})

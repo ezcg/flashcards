@@ -7,7 +7,7 @@ exports.setCategoryArr = function() {
   //categoryArr['AWS Certification'] = ['Cloud Practitioner', 'SysOps Administrator Associate', 'Developer Associate', 'DevOps Engineer Professional', 'Solutions Architect Associate', 'Solutions Architect Professional'];
   categoryArr['Language'] = ['Spanish', 'French'];
   categoryArr['Physics'] = ['Introductory'];
-  categoryArr['Math'] = ['Algebra'];
+  categoryArr['Math'] = ['Algebra', 'Statistics'];
   return categoryArr;
 }
 

@@ -1,7 +1,3 @@
-Not a bug, but needs fixing:
- - If on http://localhost:8081/tutorials/64 and hit refresh, redirects to home with must sign in message
- https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
-
 Enable distribute regardless of flashcards already being distributed - if a set of flashcards is unpublished, the
 ability to distribute and remove the flashcards needs to be enabled.
 
