@@ -4,6 +4,37 @@
 }
 /* END overwrite bootstrap */
 
+.childCategoryEdit, .parentCategoryEdit, .createChildCategory {
+  margin:2px;
+}
+.childCategoryEdit, .createChildCategory {
+  margin-left:10px;
+}
+
+.categoryMsg {
+  font-weight:bold;
+  margin:10px;
+  color:green;
+}
+
+.deleteCategoryBtn, .submitCategoryBtn {
+
+}
+.deleteCategoryBtn, .submitCategoryBtn, .createChildCategoryBtn, .addCategoryBtn {
+  border:1px solid black;
+  border-radius:5px;
+  padding:6px;
+  margin:2px;
+  cursor:pointer;
+  background-color:#dddddd;
+}
+.deleteCategoryBtn:hover, .submitCategoryBtn:hover, .createChildCategoryBtn:hover {
+  background-color:#cccccc;
+}
+.submitCategoryBtn {
+  padding:2px;
+}
+
 .hintCategory {
     float:left;
     margin-right:10px;

@@ -32,14 +32,18 @@ const Categories = () => {
     }
   }, [setIsLoading, isLoading])
 
-  const createParentCategory = async (e) => {
+  const createParentCategory = (e) => {
     e.preventDefault()
     let obj = {category:categoryParentAdd}
-    let r = await TutorialService.createCategory(obj)
-    let newCat = r.data
-    setCategoryObj({...categoryObj, newCat})
-    setMessageObj("Added")
-    setCategoryParentAdd("")
+    TutorialService.createCategory(obj).then(r => {
+      let newCat = r.data
+      categoryObj[newCat.id] = newCat
+      setCategoryObj(categoryObj)
+      setMessageObj("Added")
+      setCategoryParentAdd("")
+    }).catch(e => {
+      setMessageObj({message:e.response.data.message})
+    })
   }
 
   const handleCategoryParentEdit = (e, obj) => {
@@ -86,27 +90,57 @@ const Categories = () => {
         break
       }
     }
-   // console.log("handleCategoryChildEdit", categoryObj)
     setCategoryObj({...categoryObj})
   }
 
   const createChildCategory = async (e, obj) => {
     e.preventDefault()
-    let newObj = {}
-    newObj.category = obj.categoryChildAdd
-    newObj.parentId = obj.id
-    let r = await TutorialService.createCategory(newObj)
-    let newCat = r.data
-    categoryObj[obj.id].childArr.push(newCat)
-    categoryObj[obj.id].categoryChildAdd = ""
-    setCategoryObj(categoryObj)
-    setMessageObj("Added")
+    obj.categoryChildAdd = obj.categoryChildAdd.trim()
+    if (obj.categoryChildAdd === "") {
+      setMessageObj({message:"Child category was empty and not added."})
+    } else {
+      let newObj = {}
+      newObj.category = obj.categoryChildAdd
+      newObj.parentId = obj.id
+      let r = await TutorialService.createCategory(newObj)
+      let newCat = r.data
+      categoryObj[obj.id].childArr.push(newCat)
+      categoryObj[obj.id].categoryChildAdd = ""
+      setCategoryObj(categoryObj)
+      setMessageObj({ message: "Added" })
+    }
   }
 
-  //console.log("body categoryObj", categoryObj)
+  const deleteParentCategory = async (e, obj) => {
+    e.preventDefault()
+    if (window.confirm('Are you sure you wish to delete this parent category and any children directly beneath it?')) {
+      let newObj = {id:obj.id, parentId:obj.parentId}
+      let r = await TutorialService.deleteCategory(newObj)
+      if (r.status === 200) {
+        delete categoryObj[obj.id]
+        setCategoryObj(categoryObj)
+        setMessageObj({message:"Deleted"})
+      }
+    }
+  }
 
-  // todo: delete parent, delete child, write new json to s3, have app call new json
-  // double check add parent, add child, submit edit parent, submit edit child
+  const deleteChildCategory = async (e, childObj) => {
+    e.preventDefault()
+    if (window.confirm('Are you sure you wish to delete this child category?')) {
+      let newObj = {id:childObj.id}
+      let r = await TutorialService.deleteCategory(newObj)
+      if (r.status === 200) {
+        for(let i in categoryObj[childObj.parentId].childArr) {
+          if (categoryObj[childObj.parentId].childArr[i].id == childObj.id) {
+            delete categoryObj[childObj.parentId].childArr[i]
+            break
+          }}
+        setCategoryObj(categoryObj)
+        setMessageObj({message:"Deleted"})
+      }
+    }
+  }
+
   // wire response from be with status codes to setMessageObj in fe
 
   if (!isLoading) {
@@ -117,34 +151,67 @@ const Categories = () => {
     <div className="categoryMsg">{messageObj.message}</div>
     <h4>Add</h4>
     <div className="createCatForm">
-      <form key={"add_form"} onSubmit={(e) => createParentCategory(e)}>
-      Category Name: <input type="text" name="categoryAdd" value={categoryParentAdd}
-                            onChange={(e) => setCategoryParentAdd(e.target.value)}/>
-      <button className="button">Add</button>
+      <form
+        key={"add_form"}
+        onSubmit={(e) => createParentCategory(e)}
+      >
+      Category Name: <input
+        type="text"
+        name="categoryAdd"
+        value={categoryParentAdd}
+        onChange={(e) => setCategoryParentAdd(e.target.value)}
+      />
+      <button className="addCategoryBtn">Add</button>
       </form>
     </div>
     <br/>
     <h4>Edit</h4>
     {Object.values(categoryObj).map(obj => {
       return <div key={obj.id + "_cont"}>
-      <form onSubmit={(e) => submitParentCategoryEdit(e, obj)}>
-        <input type="text" name="categoryEdit" value={obj.category}
-               onChange = {(e) => handleCategoryParentEdit(e, obj)} />
-        <button>Submit</button>
-        <button>Delete</button>
+      <form
+        className="parentCategoryEdit"
+        onSubmit={(e) => submitParentCategoryEdit(e, obj)}
+      >
+        <input
+          type="text"
+          name="parentCategoryEdit"
+          value={obj.category}
+          onChange = {(e) => handleCategoryParentEdit(e, obj)}
+        />
+        <button className="submitCategoryBtn">Submit</button>
+        <span
+          className="deleteCategoryBtn"
+          onClick = {(e) =>deleteParentCategory(e, obj)}
+        >Delete</span>
       </form>
-      <form onSubmit = {(e) => createChildCategory(e, obj)} >
-        <input type="text" name="categoryChildAdd" value={obj.categoryChildAdd}
-               onChange = {(e) => handleCategoryChildAdd(e, obj)} />
-        <button>Add Child Category</button>
+
+      <form className="createChildCategory" onSubmit = {(e) => createChildCategory(e, obj)} >
+        <input
+          type="text"
+          name="categoryChildAdd"
+          value={obj.categoryChildAdd}
+          onChange = {(e) => handleCategoryChildAdd(e, obj)}
+        />
+        <button className="createChildCategoryBtn">Add Child Category</button>
       </form>
       <div>
       {obj.childArr.length > 0 && obj.childArr.map(childObj => {
-        return <form key={childObj.id + "_child"} onSubmit = {(e) => submitChildCategoryEdit(e, obj, childObj)}>
-        <input type="text" name="categoryEdit" value={childObj.category}
-          onChange = {(e) => handleCategoryChildEdit(e, childObj)} />
-        <button>Submit</button>
-        <button>Delete</button>
+        return <form
+          className="childCategoryEdit"
+          key={childObj.id + "_child"}
+          onSubmit = {(e) => submitChildCategoryEdit(e, obj, childObj)}
+        >
+          <input
+            type="text"
+            name="childCategoryEdit"
+            value={childObj.category}
+            onChange = {(e) => handleCategoryChildEdit(e, childObj)}
+          />
+          <button className="submitCategoryBtn">Submit</button>
+          <span
+            className="deleteCategoryBtn"
+            onClick = {(e) => deleteChildCategory(e, childObj)}
+          >Delete</span>
         </form>
       })}
       </div>

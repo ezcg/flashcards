@@ -619,7 +619,7 @@ exports.createCategory = (req, res) => {
   Categories.findOne({where: {category:category, parentId:parentId}})
     .then(r => {
       if (r) {
-        res.send({ message: "Category: " + category + " already exists"})
+        res.status(400).send({ message: "Category '" + category + "' already exists."})
       } else {
         let obj = {category:category, parentId:parentId}
         Categories.create(obj).then(r => {
@@ -644,6 +644,26 @@ exports.updateCategory = (req, res) => {
   }).then(r => {
     res.sendStatus(200)
   })
+}
+
+exports.deleteCategory = (req, res) => {
+  let id = req.body.id ? req.body.id : 0
+  let parentId = req.body.parentId ? req.body.parentId : 0
+  if (parentId >0 ) {
+    // deleting a single child
+    Categories.destroy({where:{parentId:parentId,id:id}}).then(r => {
+      res.sendStatus(200)
+    }).catch(e => {
+      res.sendStatus(400)
+    })
+  } else {
+    // deleting a parent and all of its children
+    Categories.destroy({where:{[Op.or]: [{parentId: id}, {id: id}]}}).then(r => {
+      res.sendStatus(200)
+    }).catch(e => {
+      res.sendStatus(400)
+    })
+  }
 }
 
 exports.getHintCategoryArr = (req, res) => {

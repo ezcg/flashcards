@@ -34,6 +34,8 @@ module.exports = app => {
   // Get categories
   router.get("/getcategories", [authJwt.verifyToken], tutorialController.getCategories);
 
+  router.post("/deletecategory", [authJwt.verifyToken], tutorialController.deleteCategory);
+
   // Create category
   router.post("/createcategory", [authJwt.verifyToken], tutorialController.createCategory)
 

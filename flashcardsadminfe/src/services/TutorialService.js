@@ -77,6 +77,10 @@ const createCategory = (data) => {
   return http.post(`/tutorials/createcategory`, data, { headers: authHeader() });
 }
 
+const deleteCategory = (data) => {
+  return http.post(`/tutorials/deletecategory`, data, { headers: authHeader() });
+}
+
 const updateCategory = (data) => {
   return http.put(`/tutorials/updatecategory`, data, { headers: authHeader() });
 }
@@ -86,6 +90,7 @@ const getHintCategoryArr = () => {
 }
 
 let obj = {
+  deleteCategory,
   updateCategory,
   createCategory,
   getCategories,
