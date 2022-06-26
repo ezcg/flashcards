@@ -3,19 +3,15 @@ import TutorialDataService from "../services/TutorialService";
 
 function CategoryDD({handleCategoryChange, selectedSubcategory}) {
 
-  const [categoryArr, setCategoryArr] = useState([]);
-  const [subcategoryArr, setSubcategoryArr] = useState([]);
+  const [categoryObj, setCategoryObj] = useState({});
   const [areCategoriesLoaded, setAreCategoriesLoaded] = useState(false);
 
   React.useEffect(() => {
 
     const getCategoryArr = () => {
-      TutorialDataService.getCategoryArr()
+      TutorialDataService.getCategories()
       .then(response => {
-        let tmpCategoryArr =  Object.keys(response.data);
-        let tmpSubcategoryArr = Object.values(response.data);
-        setCategoryArr(tmpCategoryArr);
-        setSubcategoryArr(tmpSubcategoryArr);
+        setCategoryObj(response.data)
         setAreCategoriesLoaded(true);
       }).catch(e => {
         console.log("e", e);
@@ -36,17 +32,18 @@ function CategoryDD({handleCategoryChange, selectedSubcategory}) {
         onChange={(e) => handleCategoryChange(e)}
       >
         <option defaultValue>Select</option>
-        {categoryArr.length && categoryArr.map((categoryTopLevel, index, categoryArr) => {
+        {Object.keys(categoryObj).length && Object.values(categoryObj).map((obj, index) => {
+          let categoryTopLevel = obj.category
           return <React.Fragment key={categoryTopLevel}><optgroup label={categoryTopLevel}
             key={index}
             className="categoryTopLevelSelectName"
           >
-          {subcategoryArr[index] && (subcategoryArr[index].map((subcategory, index) => {
+          {obj.childArr.length && obj.childArr.map((childObj, index) => {
             return <option
-            key={subcategory}
-            value={subcategory}
-            > &nbsp; {subcategory}</option>
-          }))}
+            key={childObj.category}
+            value={childObj.category}
+            > &nbsp; {childObj.category}</option>
+          })}
           </optgroup>
           </React.Fragment>
         })}

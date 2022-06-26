@@ -93,7 +93,6 @@ const getCategoriesJson = () => {
   return http.get(`/tutorials/getcategoriesjson`, { headers: authHeader() });
 }
 
-
 const getHintCategoryArr = () => {
   return http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} })
 }
