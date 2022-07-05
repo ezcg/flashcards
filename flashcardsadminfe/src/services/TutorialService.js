@@ -97,7 +97,17 @@ const getHintCategoryArr = () => {
   return http.get(`/tutorials/gethintcategoryarr`, { headers: authHeader(), params: {} })
 }
 
+const backupDb = () => {
+  return http.get(`/tutorials/backupdb`, { headers: authHeader(), params: {} })
+}
+
+const importDb = () => {
+  return http.get(`/tutorials/importdb`, { headers: authHeader(), params: {} })
+}
+
 let obj = {
+  backupDb,
+  importDb,
   getCategoriesJson,
   deployCategoriesJson,
   deleteCategory,

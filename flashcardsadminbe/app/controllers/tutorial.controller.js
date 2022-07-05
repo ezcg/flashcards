@@ -13,6 +13,10 @@ const awsService = require("../services/aws");
 const validateHelper = require("../helpers/validate");
 const Roles = require("../config/roles.config.js");
 const fs = require('fs')
+const { exec } = require('child_process')
+const dbConfig = require("../config/db.config.js")
+const mysqldump = require("mysqldump")
+const mysql = require("mysql2")
 
 /*
 
@@ -784,4 +788,132 @@ continue
   }
 
   res.sendStatus(200)
+}
+
+// https://www.npmjs.com/package/mysqldump
+exports.backupDb = async (req, res) => {
+  try {
+    let x = __dirname
+    let dataFileName = "data_" + dbConfig.db + ".sql"
+    let schemaFileName = "schema_" + dbConfig.db + ".sql"
+    const path = "/app/app/dbbackup/";
+
+    let connectionObj = {
+      user: dbConfig.user,
+      host: dbConfig.host,
+      password: dbConfig.password,
+      database: dbConfig.db
+    }
+    // dump data only
+    let r = await mysqldump({
+      connection: connectionObj,
+      dump: {schema:false},
+      dumpToFile: path + dataFileName
+    });
+    // dump schema only
+    await mysqldump({
+      connection: connectionObj,
+      dumpToFile: path + schemaFileName,
+      dump: {data:false, schema:{autoIncrement:false,table:{dropIfExist:true}}}
+    });
+
+    await awsService.uploadDb(path, dataFileName)
+    await awsService.uploadDb(path, schemaFileName)
+    res.status(200).send({message: "Db backed up on s3 and on the local host machine in flashcards/flashcardsadminbe/app/dbbackup." });
+  } catch(e) {
+    let errMsg = JSON.stringify(e)
+    // res.render('pages/indexadmin.ejs', {title:"error", error: "backupDb Error: " + errMsg, numEditMode:0, numDeployReady:0, numStaged:0, numLive:0, numBuilt:0});
+    //return res.redirect('/?success=0&error=' + encodeURIComponent(errMsg));
+    res.status(500).send({error: errMsg });
+  }
+
+}
+
+// https://www.npmjs.com/package/mysql-import
+exports.importDb = async function(req, res) {
+
+  try {
+    let dockerPath = "/app/app/dbbackup"
+    let dataFileName = "data_" + dbConfig.db + ".sql"
+    let schemaFileName = "schema_" + dbConfig.db + ".sql"
+    // create the database
+    let connection = mysql.createConnection({
+      host     : dbConfig.host,
+      user     : dbConfig.user,
+      password : dbConfig.password
+    });
+    connection.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected!");
+      connection.query("CREATE DATABASE /*!32312 IF NOT EXISTS*/ `" + dbConfig.db + "` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */", function (err, result) {
+        if (err) throw err;
+        console.log("Database created");
+      });
+    });
+
+    // Download sql files from s3
+    const { exec } = require("child_process");
+    ////////////
+    // SCHEMA
+    await awsService.downloadDb(dockerPath, schemaFileName)
+    return new Promise((resolve, reject) => {
+      let schemaPathAndFileName = dockerPath + "/" + schemaFileName
+      console.log("importing schema")
+      let sqlStr = "mysql -u" + dbConfig.user + " -p" + dbConfig.password + " -h " + dbConfig.host + " " + dbConfig.db + " < " + schemaPathAndFileName
+      console.log(sqlStr)
+      exec(sqlStr, (error, stdout, stderr) => {
+        if (error) {
+          console.log(`1 error: ${error.message}`);
+          reject(error.message);
+        }
+        if (stderr && stderr.indexOf("Using a password on the command line interface can be insecure") === -1) {
+          console.log("X1", stderr.indexOf("Using a password on the command line interface can be insecure"))
+          console.log(`2 stderr: ${stderr}`);
+          reject(stderr);
+        }
+        resolve(stdout)
+      });
+    }).then(async () => {
+      ///////////////
+      // DATA
+      let hasData = await awsService.downloadDb(dockerPath, dataFileName)
+      if (hasData) {
+        console.log("data was found, set to import it")
+        let pathAndFileName = dockerPath + '/' + dataFileName
+        return new Promise((resolve, reject) => {
+          let sqlStr = "mysql -u" + dbConfig.user + " -p" + dbConfig.password + " -h " + dbConfig.host + " " + dbConfig.db + " < " + pathAndFileName
+          console.log(sqlStr)
+          exec(sqlStr, (error, stdout, stderr) => {
+            if (error) {
+              console.log(`3 error: ${error.message}`);
+              reject(error.message);
+            }
+            if (stderr && stderr.indexOf("Using a password on the command line interface can be insecure") === -1) {
+              console.log("X2", stderr.indexOf("Using a password on the command line interface can be insecure"))
+              console.log(`4 stderr: ${stderr}`);
+              reject(stderr);
+            }
+            resolve(stdout)
+          });
+        }).then(() => {
+          return res.sendStatus(200)
+        }).catch((e) => {
+          // got an uncaught error in spite of the above 'error' code, so adding this catch/throw here
+          let errMsg = JSON.stringify(e)
+          console.log(errMsg)
+          return res.status(500).send({error:errMsg})
+        });
+      } else {
+        return res.status(500).send({error:"No data found."})
+      }
+    }).catch((e) => {
+      // got an uncaught error in spite of the above 'error' code, so adding this catch/throw here
+      throw new Error(e)
+    });
+  } catch(e) {
+    let errMsg = JSON.stringify(e)
+    console.log(errMsg)
+    return res.status(500).send({error:errMsg})
+  }
+
 }

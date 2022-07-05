@@ -129,7 +129,7 @@ const Categories = () => {
       let r = await TutorialService.deleteCategory(newObj)
       if (r.status === 200) {
         for(let i in categoryObj[childObj.parentId].childArr) {
-          if (categoryObj[childObj.parentId].childArr[i].id == childObj.id) {
+          if (categoryObj[childObj.parentId].childArr[i].id === childObj.id) {
             delete categoryObj[childObj.parentId].childArr[i]
             break
           }}
@@ -155,7 +155,7 @@ const Categories = () => {
   }
 
   return (<>
-    <div className="deployCatCont"><button class='btn btn-primary' onClick = {(e) => deployCategories(e)}>Deploy</button> categories to S3</div>
+    <div className="deployCatCont"><button className='btn btn-primary' onClick = {(e) => deployCategories(e)}>Deploy</button> categories to S3</div>
     <div className="categoryMsg">{messageObj.message}</div>
     <h4>Add</h4>
     <div className="createCatForm">

@@ -22,6 +22,10 @@ module.exports = app => {
   // Create a new Tutorial
   router.post("/", [authJwt.verifyToken], tutorialController.create);
 
+  router.get("/backupdb", [authJwt.verifyToken], tutorialController.backupDb)
+
+  router.get("/importdb", [authJwt.verifyToken], tutorialController.importDb)
+
   // Retrieve all Tutorials
   router.get("/", [authJwt.verifyToken], tutorialController.findAll);
 

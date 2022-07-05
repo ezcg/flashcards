@@ -57,3 +57,43 @@ exports.saveDataToS3 = (data, fileName) => {
     });
   });
 }
+
+exports.uploadDb = function (path, fileName) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const fileContent = fs.readFileSync(path + fileName);
+      const params = {
+        Bucket: awsConfigs.DBBACKUP_BUCKET_NAME,
+        Key: fileName,
+        Body: fileContent
+      }
+      let r = await s3.upload(params).promise();
+      resolve(r)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}
+
+exports.downloadDb = function (localPath, fileName) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const params = {
+        Bucket: awsConfigs.DBBACKUP_BUCKET_NAME,
+        Key: fileName
+      }
+      let r = await s3.getObject(params, (err, data) => {
+        if (err && err.code === 'NoSuchKey') {
+          return resolve(false)
+        }
+        if (data && data.Body) {
+          fs.writeFileSync(localPath + fileName, data.Body.toString());
+          console.log(`${localPath + fileName} has been created!`);
+        }
+      }).promise()
+      resolve(r)
+    } catch (e) {
+      reject(e)
+    }
+  })
+}

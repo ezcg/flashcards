@@ -15,6 +15,8 @@ import Tutorial from "./components/Tutorial";
 import TutorialList from "./components/TutorialList";
 import Order from "./components/Order";
 import LoginHooks from './components/LoginHooks';
+import BackupDb from './components/BackupDb';
+import ImportDb from './components/ImportDb';
 import LogoutHooks from './components/LogoutHooks';
 import configs from './configs';
 
@@ -84,6 +86,12 @@ const App = () => {
               </Link>
             </li>)}
 
+            {(showModeratorBoard || showAdminBoard) && (<li className="nav-item">
+              <Link to="/tutorials/backupdb" className="nav-link" style={{color:"#ffffff"}}>
+                DB Maintenance
+              </Link>
+            </li>)}
+
       </div>
 
       {currentUser ? (
@@ -122,14 +130,6 @@ const App = () => {
                 </Protected>
               }
             />
-            {/*<ProtectedRoute*/}
-            {/*  exact path={["/", "/tutorials"]}*/}
-            {/*  element={< TutorialList }*/}
-            {/*  my={0}*/}
-            {/*  unpublishedOnly={0}*/}
-            {/*  all={1}*/}
-            {/*  undistributedOnly={0}*/}
-            {/*/>*/}
 
             <Route
               path="/tutorials/my"
@@ -139,14 +139,7 @@ const App = () => {
                 </Protected>
               }
             />
-            {/*<ProtectedRoute*/}
-            {/*  exact path={["/tutorials/my"]}*/}
-            {/*  component={TutorialList}*/}
-            {/*  my={1}*/}
-            {/*  unpublishedOnly={0}*/}
-            {/*  all={0}*/}
-            {/*  undistributedOnly={0}*/}
-            {/*/>*/}
+
             <Route
               path="/tutorials/unpublished"
               element={
@@ -155,14 +148,7 @@ const App = () => {
                 </Protected>
               }
             />
-            {/*<ProtectedRoute*/}
-            {/*  exact path={["/tutorials/unpublished"]}*/}
-            {/*  component={TutorialList}*/}
-            {/*  my={0}*/}
-            {/*  unpublishedOnly={1}*/}
-            {/*  all={0}*/}
-            {/*  undistributedOnly={0}*/}
-            {/*/>*/}
+
             <Route
               path="/tutorials/undistributed"
               element={
@@ -171,14 +157,6 @@ const App = () => {
                 </Protected>
               }
             />
-            {/*<ProtectedRoute*/}
-            {/*  exact path={["/tutorials/undistributed"]}*/}
-            {/*  component={TutorialList}*/}
-            {/*  my={0}*/}
-            {/*  unpublishedOnly={0}*/}
-            {/*  all={0}*/}
-            {/*  undistributedOnly={1}*/}
-            {/*/>*/}
 
             <Route
               path="/add"
@@ -234,6 +212,16 @@ const App = () => {
               }
             />
 
+            <Route
+              path="/tutorials/backupdb"
+              element={
+                <Protected currentUser={currentUser}>
+                  <BackupDb />
+                  <hr/>
+                  <ImportDb />
+                </Protected>
+              }
+            />
 
           </Routes>
         </div>

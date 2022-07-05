@@ -1,0 +1,14 @@
+[
+    {
+    "AllowedHeaders": [
+        "*"
+    ],
+    "AllowedMethods": [
+        "*"
+    ],
+    "AllowedOrigins": [
+        "*"
+    ],
+        "ExposeHeaders": []
+    }
+]
