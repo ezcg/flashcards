@@ -13,6 +13,7 @@ const AddTutorial = () => {
     description: "",
     published: false,
     subcategory: "",
+    categoryId: 0,
     canDrillIt:0
   };
   const [tutorial, setTutorial] = useState(initialTutorialState);
@@ -43,7 +44,8 @@ const AddTutorial = () => {
     var data = {
       title: tutorial.title,
       description: tutorial.description,
-      subcategory: tutorial.subcategory
+      subcategory: tutorial.subcategory,
+      categoryId:tutorial.categoryId
     };
     let msg = '';
     if (tutorial.title.length < 3) {
@@ -87,6 +89,7 @@ const AddTutorial = () => {
           handleInputChange={handleInputChange}
           handleCategoryChange={handleCategoryChange}
           selectedSubcategory={tutorial.subcategory}
+          selectedCategoryId={tutorial.categoryId}
           handleDrillItChange={handleDrillItChange}
         />
 

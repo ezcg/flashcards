@@ -13,7 +13,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route exact path="/" element={<Categories/>} />
-        <Route path="/list/:subcategory" element={<List/>} />
+        <Route path="/list/:subcategory/:categoryId" element={<List/>} />
         <Route path="/:tutorialId" element={<Cards/>} />
         <Route path="/drilltable/:tutorialId" element={<Drilltable/>} />
       </Routes>

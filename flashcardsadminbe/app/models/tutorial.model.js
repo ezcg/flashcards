@@ -12,13 +12,13 @@ module.exports = (sequelize, Sequelize) => {
     userId: {
       type: Sequelize.INTEGER
     },
-    subcategory: {
-      type: Sequelize.STRING
-    },
     canDrillIt: {
+      type: Sequelize.INTEGER
+    },
+    categoryId: {
       type: Sequelize.INTEGER
     }
 
-  });
+    });
   return Tutorial;
 };

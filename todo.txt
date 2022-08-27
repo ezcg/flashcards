@@ -1,4 +1,11 @@
 debug import of data
+search not working
+
+pagination hitting browser's back button always returns to page 1. Num per page setting not maintained.
+
+add authentication to calling router.get("/getlistoftutorials", tutorialController.getListOfTutorials);
+  router.get("/getcategoriesjson", tutorialController.getCategoriesJson);
+et al or get rid of auth
 
 Enable distribute regardless of flashcards already being distributed - if a set of flashcards is unpublished, the
 ability to distribute and remove the flashcards needs to be enabled.

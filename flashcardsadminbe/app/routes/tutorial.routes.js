@@ -1,4 +1,5 @@
 const { authJwt } = require("../middleware");
+const tutorialController = require('../controllers/tutorial.controller')
 
 module.exports = app => {
 
@@ -54,6 +55,9 @@ module.exports = app => {
 
   // Push all published tutorials json to s3 so that is it accessible via the main public categories list
   router.get("/distribute",[authJwt.verifyToken], tutorialController.distribute);
+
+  // Get list of categories from db, not json file
+  router.get("/getlistoftutorials", tutorialController.getListOfTutorials);
 
   // Retrieve a single Tutorial with id
   router.get("/:id",[authJwt.verifyToken], tutorialController.findOne);

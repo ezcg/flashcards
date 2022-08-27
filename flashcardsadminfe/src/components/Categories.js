@@ -62,9 +62,9 @@ const Categories = () => {
     })
   }
 
-  const submitChildCategoryEdit = (e, obj) => {
+  const submitChildCategoryEdit = (e, obj, childObj) => {
     e.preventDefault()
-    TutorialService.updateCategory(obj).then(r => {
+    TutorialService.updateCategory(childObj).then(r => {
       setMessageObj({message:"Updated"})
     }).catch(e => {
       setMessageObj(JSON.stringify(e))

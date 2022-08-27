@@ -11,18 +11,19 @@ export default function Categories() {
 
   useEffect(() => {
     if (!isLoaded) {
-      console.log("asdf",window.location.host)
       let url = configs.s3Url + 'json/categories.json'
       if ((window.location.host).indexOf("localhost") !== -1) {
         url = 'http://localhost:8080/api/tutorials/getcategoriesjson'
       }
-      console.log(url)
+      console.log("<Categories>",url)
       fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
           let tmpCategoryArr =  Object.keys(result);
           let tmpSubcategoryArr = Object.values(result);
+          // console.log("tmpSubcategoryArr", tmpSubcategoryArr)
+          // console.log("tmpCategoryArr", tmpCategoryArr)
           setCategoryArr(tmpCategoryArr);
           setSubcategoryArr(tmpSubcategoryArr);
           setIsLoaded(true);
@@ -50,10 +51,12 @@ export default function Categories() {
         </div>
         {categoryArr.map((category, i) => {
           return <div key={category}><div className="categoryHeader">{category}</div>
-            {subcategoryArr[i] && (subcategoryArr[i].map((subcategory, j) => {
+            {subcategoryArr[i] && (subcategoryArr[i].map((subcategoryObj, j) => {
+              let subcategory = Object.values(subcategoryObj)
+              let subcategoryId = Object.keys(subcategoryObj)
               return <div className="subcategoryLinkCont" key={subcategory}>
                 <Link
-                  to={"/list/" + subcategory}
+                  to={"/list/" + subcategory + "/" + subcategoryId}
                   className="subcategoryLink"
                 >{subcategory}
                 </Link>

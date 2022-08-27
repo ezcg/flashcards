@@ -286,7 +286,7 @@ const Tutorial = ({props}) => {
   } else if (!isModerator && currentTutorial.published === 2) {
     return (<TutorialNoEdit tutorial={currentTutorial} cardsArr={cardsArr} />)
   } else {
-
+console.log(currentTutorial)
     return (
 
       <div>
@@ -304,6 +304,7 @@ const Tutorial = ({props}) => {
               handleInputChange={handleTutorialChange}
               handleCategoryChange={handleCategoryChange}
               selectedSubcategory={currentTutorial.subcategory}
+              selectedCategoryId={currentTutorial.categoryId}
               handleDrillItChange={handleDrillItChange}
             />
 
@@ -368,7 +369,7 @@ const Tutorial = ({props}) => {
         <div>
           <span className="addLabel">Add Flashcard</span>
           <br />
-          {cardsArr.length >= configs.maxQuestions ? (
+          {false && cardsArr.length >= configs.maxQuestions ? (
             <div className="maxFlashcardsMsg">You've made {configs.maxQuestions} flashcards which is the maximum number of flashcards you can
               have per tutorial. Well done!</div>
           ) : (currentTutorial.published && cardsArr.length < configs.maxQuestions ? (

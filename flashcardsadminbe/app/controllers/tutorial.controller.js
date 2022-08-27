@@ -128,7 +128,7 @@ exports.addCard = async (req, res) => {
 
   let numCards = await Card.count({where: {tutorialId: req.body.id}});
   if (numCards >= 30) {
-    return res.status(400).send({message:`You've already created 30 flashcards which is the max per tutorial. Feel free to make a sequel.`});
+    //return res.status(400).send({message:`You've already created 30 flashcards which is the max per tutorial. Feel free to make a sequel.`});
   }
 
   const card = {
@@ -235,9 +235,9 @@ exports.create = async (req, res) => {
     return res.status(400).send({message: result});
   }
 
-  result = validateHelper.isCategoryValid(req.body.subcategory);
-  if (result !== true) {
-    return res.status(400).send({message: result});
+  result = await Categories.findByPk(req.body.categoryId, {raw:true})
+  if (result === null) {
+    return res.status(400).send({message: "Not finding category with categoryId: " + req.body.categoryId});
   }
 
   // Limit to X tutorials created per day for regular user
@@ -336,7 +336,16 @@ exports.findAll = async (req, res) => {
             }
           });
           data.rows[i].dataValues.numCards = numCards;
-          data.rows[i].dataValues.category = categoriesService.getParentCategory(data.rows[i].dataValues.subcategory);
+          // get parentId of category
+          let categoryObj = await Categories.findByPk(data.rows[i].dataValues.categoryId, {raw:true})
+          let parentCategoryObj = {}
+          if (categoryObj.parentId) {
+            parentCategoryObj = await Categories.findOne({ raw: true, where: { id: categoryObj.parentId }, raw: true })
+            data.rows[i].dataValues.parentCategory = parentCategoryObj.category
+          } else {
+            data.rows[i].dataValues.parentCategory = ""
+          }
+          data.rows[i].dataValues.category = categoryObj.category
         }
         const response = getPagingData(data, page, limit);
         res.send(response);
@@ -367,59 +376,56 @@ exports.findOne = async (req, res) => {
   res.send(resultObj.tutorialObj);
 }
 
-// create a json list of tutorials
-const updateList = () => {
+exports.getListOfTutorials = async (req, res) => {
+  let arr = await getListOfTutorialsFromDb()
+  res.send(arr)
+}
 
-  return new Promise((resolve, reject) => {
-    Tutorial.findAll({
-      order: [[Sequelize.literal("tutorial.subcategory"), 'ASC'],[Sequelize.literal("tutorial.updatedAt"), 'DESC']],
-      where: {published:{[Op.gte]:1}},
-      include: [{
-        model: db.user,
-        attributes: {
-          exclude: ['password']
-        }
-      }]
-    })
-    .then(async function(data) {
-      let arr = [];
-      try {
-        for(let i = 0; i < data.length; i++) {
-          let tutorialId = data[i].dataValues.id;
-          let numCards = await Card.count({
-            where: {
-              tutorialId: tutorialId
-            }
-          });
-          let tmp = data[i].dataValues;
-          arr[i] = {};
-          arr[i].tutorialId = tmp.id;
-          arr[i].title = tmp.title
-          arr[i].description = tmp.description;
-          arr[i].userId = tmp.userId;
-          arr[i].username = tmp.user.username;
-          arr[i].subcategory = tmp.subcategory;
-          arr[i].createdAt = tmp.createdAt;
-          arr[i].updatedAt = tmp.updatedAt;
-          arr[i].numCards = numCards;
-          arr[i].canDrillIt = tmp.canDrillIt;
-        }
-        return arr;
-      } catch(e) {
-        reject(e);
+const getListOfTutorialsFromDb = async () => {
+
+  let data = await Tutorial.findAll({
+    order: [[Sequelize.literal("tutorial.categoryId"), 'ASC'],[Sequelize.literal("tutorial.updatedAt"), 'DESC']],
+    where: {published:{[Op.gte]:1}},
+    include: [{
+      model: db.user,
+      attributes: {
+        exclude: ['password']
       }
-    }).then(function(arr) {
-      awsService.saveDataToS3(arr, "list.json")
-      .then(() => {
-        resolve();
-      }).catch(e => {
-        reject(e);
-      });
-    }).catch(err => {
-      reject({message:err.message || "Some error occurred while retrieving tutorials."});
-    });
+    }]
+  })
 
-  });
+  let arr = [];
+  for (let i = 0; i < data.length; i++) {
+    let tutorialId = data[i].dataValues.id;
+    let numCards = await Card.count({
+      where: {
+        tutorialId: tutorialId
+      }
+    });
+    let tmp = data[i].dataValues;
+    arr[i] = {};
+    arr[i].tutorialId = tmp.id;
+    arr[i].title = tmp.title
+    arr[i].categoryId = tmp.categoryId;
+    arr[i].description = tmp.description;
+    arr[i].userId = tmp.userId;
+    arr[i].username = tmp.user.username;
+    arr[i].subcategory = tmp.subcategory;
+    arr[i].createdAt = tmp.createdAt;
+    arr[i].updatedAt = tmp.updatedAt;
+    arr[i].numCards = numCards;
+    arr[i].canDrillIt = tmp.canDrillIt;
+  }
+
+  return arr
+
+}
+
+// create a json list of tutorials
+const updateList = async () => {
+
+  let arr = await getListOfTutorialsFromDb()
+  await awsService.saveDataToS3(arr, "list.json")
 
 }
 
@@ -451,10 +457,9 @@ exports.update = async (req, res) => {
   if (result !== true) {
     return res.status(400).send({message: result});
   }
-
-  result = validateHelper.isCategoryValid(req.body.subcategory);
-  if (result !== true) {
-    return res.status(400).send({message: result});
+  result = await Categories.findByPk(req.body.categoryId, {raw:true})
+  if (result === null) {
+    return res.status(400).send({message: "Not finding a category with id " + req.body.categoryId});
   }
 
   let resultObj = await verifyTutorialAccess(tutorialId, req, res);
@@ -466,7 +471,7 @@ exports.update = async (req, res) => {
     where: { id: tutorialId, userId:req.validatedUserId }
   })
   .then(async num => {
-    if (num == 1) {
+    if (num) {
       res.send({message: "Tutorial updated."});
     } else {
       res.status(400).send({
@@ -619,7 +624,9 @@ async function getCategoriesJson() {
       if (catChildArr.length) {
         categoryObj[obj.category] = []
         for(let i in catChildArr) {
-          categoryObj[obj.category].push(catChildArr[i].category)
+          let childCatId = catChildArr[i]['id']
+          let childCatName = catChildArr[i].category
+          categoryObj[obj.category].push({[childCatId]: childCatName})
         }
       }
     }

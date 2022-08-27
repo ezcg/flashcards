@@ -7,6 +7,7 @@ const TutorialTopLevel = ({
   handleInputChange,
   handleCategoryChange,
   selectedSubcategory,
+  selectedCategoryId,
   handleDrillItChange
 }) => {
 
@@ -16,7 +17,11 @@ const TutorialTopLevel = ({
     <div style={{ clear: "both" }}/>
     <br/>
     <div className="form-group">
-      Category: <CategoryDD handleCategoryChange={handleCategoryChange} selectedSubcategory={selectedSubcategory}/>
+      Category: <CategoryDD
+      handleCategoryChange={handleCategoryChange}
+      selectedSubcategory={selectedSubcategory}
+      selectedCategoryId={selectedCategoryId}
+    />
        &nbsp;
       Can Drill: <input
       type="checkbox"

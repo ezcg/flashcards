@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import TutorialDataService from "../services/TutorialService";
 
-function CategoryDD({handleCategoryChange, selectedSubcategory}) {
-
+function CategoryDD({handleCategoryChange, selectedSubcategory, selectedCategoryId}) {
+console.log("selectedCategoryId", selectedCategoryId)
   const [categoryObj, setCategoryObj] = useState({});
   const [areCategoriesLoaded, setAreCategoriesLoaded] = useState(false);
 
@@ -11,6 +11,7 @@ function CategoryDD({handleCategoryChange, selectedSubcategory}) {
     const getCategoryArr = () => {
       TutorialDataService.getCategories()
       .then(response => {
+        console.log(response.data)
         setCategoryObj(response.data)
         setAreCategoriesLoaded(true);
       }).catch(e => {
@@ -27,8 +28,8 @@ function CategoryDD({handleCategoryChange, selectedSubcategory}) {
   } else {
     return (
       <select
-        name="subcategory"
-        value={selectedSubcategory}
+        name="categoryId"
+        value={selectedCategoryId}
         onChange={(e) => handleCategoryChange(e)}
       >
         <option defaultValue>Select</option>
@@ -41,7 +42,7 @@ function CategoryDD({handleCategoryChange, selectedSubcategory}) {
           {obj.childArr.length && obj.childArr.map((childObj, index) => {
             return <option
             key={childObj.category}
-            value={childObj.category}
+            value={childObj.id}
             > &nbsp; {childObj.category}</option>
           })}
           </optgroup>

@@ -5,18 +5,24 @@ import { useParams } from "react-router-dom";
 
 const List = () => {
 
-  let { subcategory } = useParams();
+  let { subcategory, categoryId } = useParams();
+  categoryId = parseInt(categoryId)
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [tutorialsArr, setTutorialsArr] = useState([])
 
   useEffect(() => {
     if (!isLoaded) {
-      fetch( configs.s3Url + 'json/list.json')
+      let url = configs.s3Url + 'json/list.json'
+      if ((window.location.host).indexOf("localhost") !== -1) {
+        url = 'http://localhost:8080/api/tutorials/getlistoftutorials'
+      }
+      console.log("<List>",url)
+      fetch( url)
       .then(res => res.json())
       .then(
         (result) => {
-          let tmpTutorialsArr = result.filter(obj => { return obj.subcategory === subcategory })
+          let tmpTutorialsArr = result.filter(obj => { return obj.categoryId === categoryId })
           setTutorialsArr(tmpTutorialsArr);
           setIsLoaded(true);
         },
@@ -26,7 +32,7 @@ const List = () => {
         }
       )
     }
-  }, [isLoaded, subcategory]);
+  }, [isLoaded, categoryId]);
 
   if (error) {
     return <div>Error: {error.message}</div>;

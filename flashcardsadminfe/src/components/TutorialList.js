@@ -96,7 +96,7 @@ const TutorialList = ({props}) => {
         } else {
           response = await TutorialDataService.getAll(params);
         }
-        //console.log(response.data.tutorials)
+        console.log(response.data.tutorials)
         setTutorials(response.data.tutorials);
         setCount(response.data.totalPages);
         setIsLoaded(true);
@@ -275,7 +275,7 @@ const TutorialList = ({props}) => {
                 <div >
                 <span className="listTitle">{tutorial.title}</span> by {tutorial.user.username} ({tutorial.numCards} cards) in
                 <br />
-                  {tutorial.category}:<b>{tutorial.subcategory}</b>
+                  {tutorial.parentCategory}: {tutorial.category}
                 <br />
                 <div className="listDesc">
                   {tutorial.description}

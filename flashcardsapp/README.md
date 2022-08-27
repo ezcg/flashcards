@@ -10,7 +10,7 @@ scripts": {
   },
 ```
 
-To deploy to S3, while in the docker container for the flashcards 'app' (docker exec -it app bash) type on the command line:
+If you have aws credentials set up on your host machine, to deploy to S3, while in the flashcardapp dir type on the command line:
 
 ```
 npm run build && npm run deploy
