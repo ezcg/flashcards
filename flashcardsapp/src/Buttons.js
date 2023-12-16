@@ -67,7 +67,7 @@ export default function Buttons ({ view, clickView, prevCard, nextCard, handleVi
   />
   <div style={{clear:"both"}} />
   <div className="aboutHintsLinkCont"
-  ><a rel="noopener noreferrer" href="https://flashcards.ezcg.com/hints.html" target="_blank"
+  ><a rel="noopener noreferrer" href="https://flashcards.full-stack-dev.net/hints.html" target="_blank"
   ><b>About Hints</b></a>
   </div>
   </div>

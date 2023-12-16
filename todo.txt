@@ -1,5 +1,4 @@
 debug import of data
-search not working
 
 pagination hitting browser's back button always returns to page 1. Num per page setting not maintained.
 

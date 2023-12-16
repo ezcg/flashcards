@@ -14,9 +14,9 @@ const List = () => {
   useEffect(() => {
     if (!isLoaded) {
       let url = configs.s3Url + 'json/list.json'
-      if ((window.location.host).indexOf("localhost") !== -1) {
-        url = 'http://localhost:8080/api/tutorials/getlistoftutorials'
-      }
+      // if ((window.location.host).indexOf("localhost") !== -1) {
+      //   url = 'http://localhost:8080/api/tutorials/getlistoftutorials'
+      // }
       console.log("<List>",url)
       fetch( url)
       .then(res => res.json())

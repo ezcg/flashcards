@@ -12,9 +12,9 @@ export default function Categories() {
   useEffect(() => {
     if (!isLoaded) {
       let url = configs.s3Url + 'json/categories.json'
-      if ((window.location.host).indexOf("localhost") !== -1) {
-        url = 'http://localhost:8080/api/tutorials/getcategoriesjson'
-      }
+      // if ((window.location.host).indexOf("localhost") !== -1) {
+      //   url = 'http://localhost:8080/api/tutorials/getcategoriesjson'
+      // }
       console.log("<Categories>",url)
       fetch(url)
       .then(res => res.json())
@@ -45,7 +45,7 @@ export default function Categories() {
     return (
       <div key="main" className="container">
         <div className="categoriesHeader">
-          <span className="categoriesTitle">Flashcards by ezcg.com</span>
+          <span className="categoriesTitle">Flashcards</span>
           {/*<br />*/}
           {/*<a className='linkToAdmin' href={configs.flashcardsadminfe}>Create and edit your own flashcard set</a> or click on a set below to practice.*/}
         </div>
