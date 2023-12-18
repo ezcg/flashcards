@@ -6,7 +6,7 @@ My bucket name was flashcards.ezcg.com and my script block in package.json looks
 ```
 scripts": {
     ...snip...
-    "deploy": "aws s3 sync build/ s3://flashcards.ezcg.com"
+    "deploy": "aws s3 sync build/ s3://flashcards.full-stack-dev.net"
   },
 ```
 
