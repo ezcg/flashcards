@@ -51,11 +51,14 @@ const AddTutorial = () => {
     if (tutorial.title.length < 3) {
       msg = "Title must be at least 3 characters long. ";
     }
-    if (!tutorial.subcategory) {
+    // if (!tutorial.subcategory) {
+    //   msg+= "Category is required. ";
+    // }
+    if (!tutorial.categoryId) {
       msg+= "Category is required. ";
     }
-
     if (msg) {
+      console.log(tutorial)
       setMessageObj({message:msg, success:0, errorObj: {}});
     } else {
       TutorialDataService.create(data)
